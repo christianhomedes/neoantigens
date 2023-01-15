@@ -1,0 +1,1873 @@
+
+# DATOS
+
+1.- Se obtienen los datos crudos.
+
+2.- Se seleccionan los potenciales neoantígenos según IC50, rank o affinity según el software:
+  * IC50: NetMHCpan BA 4.1., NetMHCcons, PickPocket
+  * rank: NetMHCpan EL 4.1.
+  * affinity: MHCflurry
+  
+3.- Se eliminan los potenciales neoantígenos que ocupan más de una línea por ser reconocidos por distintos HLA del mismo individuo.
+
+## R009
+
+### OPTITYPE
+
+
+```{r}
+NetMHCpanEL_R009_optitype <- read.delim("C:/Users/chris/Desktop/NetMHCpanEL/NetMHCpanEL_R009_optitype.tabular", stringsAsFactors=TRUE)
+head(NetMHCpanEL_R009_optitype)
+```
+
+```{r}
+dim(NetMHCpanEL_R009_optitype)
+```
+
+```{r}
+
+NetMHCpanEL_R009_optitype_rank<- subset(NetMHCpanEL_R009_optitype, NetMHCpanEL_R009_optitype$percentile_rank<2)
+dim(NetMHCpanEL_R009_optitype_rank)
+
+```
+```{r}
+NetMHCpanEL_R009_optitype_rank_simp<- subset(NetMHCpanEL_R009_optitype_rank
+[!duplicated(NetMHCpanEL_R009_optitype_rank$peptide), ])
+dim(NetMHCpanEL_R009_optitype_rank_simp)
+```
+--
+```{r}
+NetMHCpanBA_R009_optitype <- read.delim("C:/Users/chris/Desktop/NetMHCpanBA/NetMHCpanBA_R009_optitype.tabular", stringsAsFactors=TRUE)
+head(NetMHCpanBA_R009_optitype)
+```
+```{r}
+dim(NetMHCpanBA_R009_optitype)
+```
+```{r}
+NetMHCpanBA_R009_optitype_ic50<- subset(NetMHCpanBA_R009_optitype, NetMHCpanBA_R009_optitype$ic50<500)
+dim(NetMHCpanBA_R009_optitype_ic50)
+```
+```{r}
+NetMHCpanBA_R009_optitype_ic50_simp<- subset(NetMHCpanBA_R009_optitype_ic50
+[!duplicated(NetMHCpanBA_R009_optitype_ic50$peptide), ])
+dim(NetMHCpanBA_R009_optitype_ic50_simp)
+```
+--
+```{r}
+NetMHCcons_R009_optitype <- read.delim("C:/Users/chris/Desktop/NetMHCcons/NetMHCcons_R009_optitype.tabular", stringsAsFactors=TRUE)
+head(NetMHCcons_R009_optitype)
+```
+```{r}
+dim(NetMHCcons_R009_optitype)
+```
+```{r}
+NetMHCcons_R009_optitype_ic50<- subset(NetMHCcons_R009_optitype, NetMHCcons_R009_optitype$ic50<500)
+dim(NetMHCcons_R009_optitype_ic50)
+```
+```{r}
+NetMHCcons_R009_optitype_ic50_simp<- subset(NetMHCcons_R009_optitype_ic50
+[!duplicated(NetMHCcons_R009_optitype_ic50$peptide), ])
+dim(NetMHCcons_R009_optitype_ic50_simp)
+```
+--
+```{r}
+PickPocket_R009_optitype <- read.delim("C:/Users/chris/Desktop/PickPocket/PickPocket_R009_optitype.tabular", stringsAsFactors=TRUE)
+head(PickPocket_R009_optitype)
+```
+```{r}
+dim(PickPocket_R009_optitype)
+```
+```{r}
+PickPocket_R009_optitype_ic50<- subset(PickPocket_R009_optitype, PickPocket_R009_optitype$ic50<500)
+dim(PickPocket_R009_optitype_ic50)
+```
+```{r}
+PickPocket_R009_optitype_ic50_simp<- subset(PickPocket_R009_optitype_ic50
+[!duplicated(PickPocket_R009_optitype_ic50$peptide), ])
+dim(PickPocket_R009_optitype_ic50_simp)
+```
+--
+```{r}
+MHCflurry_R009_optitype <- read.csv("MHCflurry/MHCflurry_R009_optitype.csv", sep=",")
+head(MHCflurry_R009_optitype)
+```
+```{r}
+dim(MHCflurry_R009_optitype)
+```
+
+```{r}
+MHCflurry_R009_optitype_affinity<- subset(MHCflurry_R009_optitype, MHCflurry_R009_optitype$affinity<500)
+dim(MHCflurry_R009_optitype_affinity)
+```
+```{r}
+MHCflurry_R009_optitype_affinity_simp<- subset(MHCflurry_R009_optitype_affinity
+[!duplicated(MHCflurry_R009_optitype_affinity$peptide), ])
+dim(MHCflurry_R009_optitype_affinity_simp)
+```
+
+### SEQ2HLA
+
+
+```{r}
+NetMHCpanEL_R009_seq2HLA <- read.delim("C:/Users/chris/Desktop/NetMHCpanEL/NetMHCpanEL_R009_seq2HLA.tabular", stringsAsFactors=TRUE)
+head(NetMHCpanEL_R009_seq2HLA)
+```
+
+```{r}
+dim(NetMHCpanEL_R009_seq2HLA)
+```
+```{r}
+NetMHCpanEL_R009_seq2HLA_rank<- subset(NetMHCpanEL_R009_seq2HLA, NetMHCpanEL_R009_seq2HLA$percentile_rank<2)
+dim(NetMHCpanEL_R009_seq2HLA_rank)
+```
+```{r}
+NetMHCpanEL_R009_seq2HLA_rank_simp<- subset(NetMHCpanEL_R009_seq2HLA_rank
+[!duplicated(NetMHCpanEL_R009_seq2HLA_rank$peptide), ])
+dim(NetMHCpanEL_R009_seq2HLA_rank_simp)
+```
+--
+```{r}
+NetMHCpanBA_R009_seq2HLA <- read.delim("C:/Users/chris/Desktop/NetMHCpanBA/NetMHCpanBA_R009_seq2HLA.tabular", stringsAsFactors=TRUE)
+head(NetMHCpanBA_R009_seq2HLA)
+```
+```{r}
+dim(NetMHCpanBA_R009_seq2HLA)
+```
+```{r}
+NetMHCpanBA_R009_seq2HLA_ic50<- subset(NetMHCpanBA_R009_seq2HLA, NetMHCpanBA_R009_seq2HLA$ic50<500)
+dim(NetMHCpanBA_R009_seq2HLA_ic50)
+```
+```{r}
+NetMHCpanBA_R009_seq2HLA_ic50_simp<- subset(NetMHCpanBA_R009_seq2HLA_ic50
+[!duplicated(NetMHCpanBA_R009_seq2HLA_ic50$peptide), ])
+dim(NetMHCpanBA_R009_seq2HLA_ic50_simp)
+```
+--
+```{r}
+NetMHCcons_R009_seq2HLA <- read.delim("C:/Users/chris/Desktop/NetMHCcons/NetMHCcons_R009_seq2HLA.tabular", stringsAsFactors=TRUE)
+head(NetMHCcons_R009_seq2HLA)
+```
+```{r}
+dim(NetMHCcons_R009_seq2HLA)
+```
+```{r}
+NetMHCcons_R009_seq2HLA_ic50<- subset(NetMHCcons_R009_seq2HLA, NetMHCcons_R009_seq2HLA$ic50<500)
+dim(NetMHCcons_R009_seq2HLA_ic50)
+```
+```{r}
+NetMHCcons_R009_seq2HLA_ic50_simp<- subset(NetMHCcons_R009_seq2HLA_ic50
+[!duplicated(NetMHCcons_R009_seq2HLA_ic50$peptide), ])
+dim(NetMHCcons_R009_seq2HLA_ic50_simp)
+```
+--
+```{r}
+PickPocket_R009_seq2HLA <- read.delim("C:/Users/chris/Desktop/PickPocket/PickPocket_R009_seq2HLA.tabular", stringsAsFactors=TRUE)
+head(PickPocket_R009_seq2HLA)
+```
+```{r}
+dim(PickPocket_R009_seq2HLA)
+```
+```{r}
+PickPocket_R009_seq2HLA_ic50<- subset(PickPocket_R009_seq2HLA, PickPocket_R009_seq2HLA$ic50<500)
+dim(PickPocket_R009_seq2HLA_ic50)
+```
+```{r}
+PickPocket_R009_seq2HLA_ic50_simp<- subset(PickPocket_R009_seq2HLA_ic50
+[!duplicated(PickPocket_R009_seq2HLA_ic50$peptide), ])
+dim(PickPocket_R009_seq2HLA_ic50_simp)
+```
+--
+```{r}
+MHCflurry_R009_seq2HLA <- read.csv("MHCflurry/MHCflurry_R009_seq2HLA.csv", sep=",")
+head(MHCflurry_R009_seq2HLA)
+```
+```{r}
+dim(MHCflurry_R009_seq2HLA)
+```
+
+```{r}
+MHCflurry_R009_seq2HLA_affinity<- subset(MHCflurry_R009_seq2HLA, MHCflurry_R009_seq2HLA$affinity<500)
+dim(MHCflurry_R009_seq2HLA_affinity)
+```
+```{r}
+MHCflurry_R009_seq2HLA_affinity_simp<- subset(MHCflurry_R009_seq2HLA_affinity
+[!duplicated(MHCflurry_R009_seq2HLA_affinity$peptide), ])
+dim(MHCflurry_R009_seq2HLA_affinity_simp)
+```
+
+### ARCASHLA
+
+HLA no disponible en los softwares NetMHCcons y PickPocket.
+
+```{r}
+NetMHCpanEL_R009_arcasHLA <- read.csv2("C:/Users/chris/Desktop/NetMHCpanEL/NetMHCpanEL_R009_arcasHLA.csv", sep=",")
+head(NetMHCpanEL_R009_arcasHLA)
+```
+
+```{r}
+dim(NetMHCpanEL_R009_arcasHLA)
+```
+```{r}
+NetMHCpanEL_R009_arcasHLA_rank<- subset(NetMHCpanEL_R009_arcasHLA, NetMHCpanEL_R009_arcasHLA$rank<2)
+dim(NetMHCpanEL_R009_arcasHLA_rank)
+```
+```{r}
+NetMHCpanEL_R009_arcasHLA_rank_simp<- subset(NetMHCpanEL_R009_arcasHLA_rank
+[!duplicated(NetMHCpanEL_R009_arcasHLA_rank$peptide), ])
+dim(NetMHCpanEL_R009_arcasHLA_rank_simp)
+```
+--
+```{r}
+NetMHCpanBA_R009_arcasHLA <- read.csv2("C:/Users/chris/Desktop/NetMHCpanBA/NetMHCpanBA_R009_arcasHLA.csv", sep=",")
+head(NetMHCpanBA_R009_arcasHLA)
+```
+```{r}
+dim(NetMHCpanBA_R009_arcasHLA)
+```
+```{r}
+NetMHCpanBA_R009_arcasHLA_ic50<- subset(NetMHCpanBA_R009_arcasHLA, NetMHCpanBA_R009_arcasHLA$ic50<500)
+dim(NetMHCpanBA_R009_arcasHLA_ic50)
+```
+```{r}
+NetMHCpanBA_R009_arcasHLA_ic50_simp<- subset(NetMHCpanBA_R009_arcasHLA_ic50
+[!duplicated(NetMHCpanBA_R009_arcasHLA_ic50$peptide), ])
+dim(NetMHCpanBA_R009_arcasHLA_ic50_simp)
+```
+--
+```{r}
+MHCflurry_R009_arcasHLA <- read.csv("MHCflurry/MHCflurry_R009_arcasHLA.csv", sep=",")
+head(MHCflurry_R009_arcasHLA)
+```
+```{r}
+dim(MHCflurry_R009_arcasHLA)
+```
+```{r}
+MHCflurry_R009_arcasHLA_affinity<- subset(MHCflurry_R009_arcasHLA, MHCflurry_R009_arcasHLA$affinity<500)
+dim(MHCflurry_R009_arcasHLA_affinity)
+```
+```{r}
+MHCflurry_R009_arcasHLA_affinity_simp<- subset(MHCflurry_R009_arcasHLA_affinity
+[!duplicated(MHCflurry_R009_arcasHLA_affinity$peptide), ])
+dim(MHCflurry_R009_arcasHLA_affinity_simp)
+```
+
+
+## R018
+
+### OPTITYPE
+
+```{r}
+NetMHCpanEL_R018_optitype <- read.delim("C:/Users/chris/Desktop/NetMHCpanEL/NetMHCpanEL_R018_optitype.tabular", stringsAsFactors=TRUE)
+head(NetMHCpanEL_R018_optitype)
+```
+
+```{r}
+dim(NetMHCpanEL_R018_optitype)
+```
+
+```{r}
+
+NetMHCpanEL_R018_optitype_rank<- subset(NetMHCpanEL_R018_optitype, NetMHCpanEL_R018_optitype$percentile_rank<2)
+dim(NetMHCpanEL_R018_optitype_rank)
+
+```
+```{r}
+NetMHCpanEL_R018_optitype_rank_simp<- subset(NetMHCpanEL_R018_optitype_rank
+[!duplicated(NetMHCpanEL_R018_optitype_rank$peptide), ])
+dim(NetMHCpanEL_R018_optitype_rank_simp)
+```
+--
+```{r}
+NetMHCpanBA_R018_optitype <- read.delim("C:/Users/chris/Desktop/NetMHCpanBA/NetMHCpanBA_R018_optitype.tabular", stringsAsFactors=TRUE)
+head(NetMHCpanBA_R018_optitype)
+```
+```{r}
+dim(NetMHCpanBA_R018_optitype)
+```
+```{r}
+NetMHCpanBA_R018_optitype_ic50<- subset(NetMHCpanBA_R018_optitype, NetMHCpanBA_R018_optitype$ic50<500)
+dim(NetMHCpanBA_R018_optitype_ic50)
+```
+```{r}
+NetMHCpanBA_R018_optitype_ic50_simp<- subset(NetMHCpanBA_R018_optitype_ic50
+[!duplicated(NetMHCpanBA_R018_optitype_ic50$peptide), ])
+dim(NetMHCpanBA_R018_optitype_ic50_simp)
+```
+--
+```{r}
+NetMHCcons_R018_optitype <- read.delim("C:/Users/chris/Desktop/NetMHCcons/NetMHCcons_R018_optitype.tabular", stringsAsFactors=TRUE)
+head(NetMHCcons_R018_optitype)
+```
+```{r}
+dim(NetMHCcons_R018_optitype)
+```
+```{r}
+NetMHCcons_R018_optitype_ic50<- subset(NetMHCcons_R018_optitype, NetMHCcons_R018_optitype$ic50<500)
+dim(NetMHCcons_R018_optitype_ic50)
+```
+```{r}
+NetMHCcons_R018_optitype_ic50_simp<- subset(NetMHCcons_R018_optitype_ic50
+[!duplicated(NetMHCcons_R018_optitype_ic50$peptide), ])
+dim(NetMHCcons_R018_optitype_ic50_simp)
+```
+--
+```{r}
+PickPocket_R018_optitype <- read.delim("C:/Users/chris/Desktop/PickPocket/PickPocket_R018_optitype.tabular", stringsAsFactors=TRUE)
+head(PickPocket_R018_optitype)
+```
+```{r}
+dim(PickPocket_R018_optitype)
+```
+```{r}
+PickPocket_R018_optitype_ic50<- subset(PickPocket_R018_optitype, PickPocket_R018_optitype$ic50<500)
+dim(PickPocket_R018_optitype_ic50)
+```
+```{r}
+PickPocket_R018_optitype_ic50_simp<- subset(PickPocket_R018_optitype_ic50
+[!duplicated(PickPocket_R018_optitype_ic50$peptide), ])
+dim(PickPocket_R018_optitype_ic50_simp)
+```
+--
+```{r}
+MHCflurry_R018_optitype <- read.csv("MHCflurry/MHCflurry_R018_optitype.csv", sep=",")
+head(MHCflurry_R018_optitype)
+```
+```{r}
+dim(MHCflurry_R018_optitype)
+```
+
+```{r}
+MHCflurry_R018_optitype_affinity<- subset(MHCflurry_R018_optitype, MHCflurry_R018_optitype$affinity<500)
+dim(MHCflurry_R018_optitype_affinity)
+```
+```{r}
+MHCflurry_R018_optitype_affinity_simp<- subset(MHCflurry_R018_optitype_affinity
+[!duplicated(MHCflurry_R018_optitype_affinity$peptide), ])
+dim(MHCflurry_R018_optitype_affinity_simp)
+```
+
+### SEQ2HLA
+
+
+```{r}
+NetMHCpanEL_R018_seq2HLA <- read.delim("C:/Users/chris/Desktop/NetMHCpanEL/NetMHCpanEL_R018_seq2HLA.tabular", stringsAsFactors=TRUE)
+head(NetMHCpanEL_R018_seq2HLA)
+```
+
+```{r}
+dim(NetMHCpanEL_R018_seq2HLA)
+```
+```{r}
+NetMHCpanEL_R018_seq2HLA_rank<- subset(NetMHCpanEL_R018_seq2HLA, NetMHCpanEL_R018_seq2HLA$percentile_rank<2)
+dim(NetMHCpanEL_R018_seq2HLA_rank)
+```
+```{r}
+NetMHCpanEL_R018_seq2HLA_rank_simp<- subset(NetMHCpanEL_R018_seq2HLA_rank
+[!duplicated(NetMHCpanEL_R018_seq2HLA_rank$peptide), ])
+dim(NetMHCpanEL_R018_seq2HLA_rank_simp)
+```
+--
+```{r}
+NetMHCpanBA_R018_seq2HLA <- read.delim("C:/Users/chris/Desktop/NetMHCpanBA/NetMHCpanBA_R018_seq2HLA.tabular", stringsAsFactors=TRUE)
+head(NetMHCpanBA_R018_seq2HLA)
+```
+```{r}
+dim(NetMHCpanBA_R018_seq2HLA)
+```
+```{r}
+NetMHCpanBA_R018_seq2HLA_ic50<- subset(NetMHCpanBA_R018_seq2HLA, NetMHCpanBA_R018_seq2HLA$ic50<500)
+dim(NetMHCpanBA_R018_seq2HLA_ic50)
+```
+```{r}
+NetMHCpanBA_R018_seq2HLA_ic50_simp<- subset(NetMHCpanBA_R018_seq2HLA_ic50
+[!duplicated(NetMHCpanBA_R018_seq2HLA_ic50$peptide), ])
+dim(NetMHCpanBA_R018_seq2HLA_ic50_simp)
+```
+--
+```{r}
+NetMHCcons_R018_seq2HLA <- read.delim("C:/Users/chris/Desktop/NetMHCcons/NetMHCcons_R018_seq2HLA.tabular", stringsAsFactors=TRUE)
+head(NetMHCcons_R018_seq2HLA)
+```
+```{r}
+dim(NetMHCcons_R018_seq2HLA)
+```
+```{r}
+NetMHCcons_R018_seq2HLA_ic50<- subset(NetMHCcons_R018_seq2HLA, NetMHCcons_R018_seq2HLA$ic50<500)
+dim(NetMHCcons_R018_seq2HLA_ic50)
+```
+```{r}
+NetMHCcons_R018_seq2HLA_ic50_simp<- subset(NetMHCcons_R018_seq2HLA_ic50
+[!duplicated(NetMHCcons_R018_seq2HLA_ic50$peptide), ])
+dim(NetMHCcons_R018_seq2HLA_ic50_simp)
+```
+--
+```{r}
+PickPocket_R018_seq2HLA <- read.delim("C:/Users/chris/Desktop/PickPocket/PickPocket_R018_seq2HLA.tabular", stringsAsFactors=TRUE)
+head(PickPocket_R018_seq2HLA)
+```
+```{r}
+dim(PickPocket_R018_seq2HLA)
+```
+```{r}
+PickPocket_R018_seq2HLA_ic50<- subset(PickPocket_R018_seq2HLA, PickPocket_R018_seq2HLA$ic50<500)
+dim(PickPocket_R018_seq2HLA_ic50)
+```
+```{r}
+PickPocket_R018_seq2HLA_ic50_simp<- subset(PickPocket_R018_seq2HLA_ic50
+[!duplicated(PickPocket_R018_seq2HLA_ic50$peptide), ])
+dim(PickPocket_R018_seq2HLA_ic50_simp)
+```
+--
+```{r}
+MHCflurry_R018_seq2HLA <- read.csv("MHCflurry/MHCflurry_R018_seq2HLA.csv", sep=",")
+head(MHCflurry_R018_seq2HLA)
+```
+```{r}
+dim(MHCflurry_R018_seq2HLA)
+```
+
+```{r}
+MHCflurry_R018_seq2HLA_affinity<- subset(MHCflurry_R018_seq2HLA, MHCflurry_R018_seq2HLA$affinity<500)
+dim(MHCflurry_R018_seq2HLA_affinity)
+```
+```{r}
+MHCflurry_R018_seq2HLA_affinity_simp<- subset(MHCflurry_R018_seq2HLA_affinity
+[!duplicated(MHCflurry_R018_seq2HLA_affinity$peptide), ])
+dim(MHCflurry_R018_seq2HLA_affinity_simp)
+```
+
+### ARCASHLA
+
+
+```{r}
+NetMHCpanEL_R018_arcasHLA <- read.delim("C:/Users/chris/Desktop/NetMHCpanEL/NetMHCpanEL_R018_arcasHLA.tabular", stringsAsFactors = TRUE)
+head(NetMHCpanEL_R018_arcasHLA)
+```
+
+```{r}
+dim(NetMHCpanEL_R018_arcasHLA)
+```
+```{r}
+NetMHCpanEL_R018_arcasHLA_rank<- subset(NetMHCpanEL_R018_arcasHLA, NetMHCpanEL_R018_arcasHLA$percentile_rank<2)
+dim(NetMHCpanEL_R018_arcasHLA_rank)
+```
+```{r}
+NetMHCpanEL_R018_arcasHLA_rank_simp<- subset(NetMHCpanEL_R018_arcasHLA_rank
+[!duplicated(NetMHCpanEL_R018_arcasHLA_rank$peptide), ])
+dim(NetMHCpanEL_R018_arcasHLA_rank_simp)
+```
+--
+```{r}
+NetMHCpanBA_R018_arcasHLA <- read.delim("C:/Users/chris/Desktop/NetMHCpanBA/NetMHCpanBA_R018_arcasHLA.tabular", stringsAsFactors = TRUE)
+head(NetMHCpanBA_R018_arcasHLA)
+```
+```{r}
+dim(NetMHCpanBA_R018_arcasHLA)
+```
+```{r}
+NetMHCpanBA_R018_arcasHLA_ic50<- subset(NetMHCpanBA_R018_arcasHLA, NetMHCpanBA_R018_arcasHLA$ic50<500)
+dim(NetMHCpanBA_R018_arcasHLA_ic50)
+```
+```{r}
+NetMHCpanBA_R018_arcasHLA_ic50_simp<- subset(NetMHCpanBA_R018_arcasHLA_ic50
+[!duplicated(NetMHCpanBA_R018_arcasHLA_ic50$peptide), ])
+dim(NetMHCpanBA_R018_arcasHLA_ic50_simp)
+```
+--
+```{r}
+NetMHCcons_R018_arcasHLA <- read.delim("C:/Users/chris/Desktop/NetMHCcons/NetMHCcons_R018_arcasHLA.tabular", stringsAsFactors=TRUE)
+head(NetMHCcons_R018_arcasHLA)
+```
+```{r}
+dim(NetMHCcons_R018_arcasHLA)
+```
+```{r}
+NetMHCcons_R018_arcasHLA_ic50<- subset(NetMHCcons_R018_arcasHLA, NetMHCcons_R018_arcasHLA$ic50<500)
+dim(NetMHCcons_R018_arcasHLA_ic50)
+```
+```{r}
+NetMHCcons_R018_arcasHLA_ic50_simp<- subset(NetMHCcons_R018_arcasHLA_ic50
+[!duplicated(NetMHCcons_R018_arcasHLA_ic50$peptide), ])
+dim(NetMHCcons_R018_arcasHLA_ic50_simp)
+```
+--
+```{r}
+PickPocket_R018_arcasHLA <- read.delim("C:/Users/chris/Desktop/PickPocket/PickPocket_R018_arcasHLA.tabular", stringsAsFactors=TRUE)
+head(PickPocket_R018_arcasHLA)
+```
+```{r}
+dim(PickPocket_R018_arcasHLA)
+```
+```{r}
+PickPocket_R018_arcasHLA_ic50<- subset(PickPocket_R018_arcasHLA, PickPocket_R018_arcasHLA$ic50<500)
+dim(PickPocket_R018_arcasHLA_ic50)
+```
+```{r}
+PickPocket_R018_arcasHLA_ic50_simp<- subset(PickPocket_R018_arcasHLA_ic50
+[!duplicated(PickPocket_R018_arcasHLA_ic50$peptide), ])
+dim(PickPocket_R018_arcasHLA_ic50_simp)
+```
+--
+```{r}
+MHCflurry_R018_arcasHLA <- read.csv("MHCflurry/MHCflurry_R018_arcasHLA.csv", sep=",")
+head(MHCflurry_R018_arcasHLA)
+```
+```{r}
+dim(MHCflurry_R018_arcasHLA)
+```
+
+```{r}
+MHCflurry_R018_arcasHLA_affinity<- subset(MHCflurry_R018_arcasHLA, MHCflurry_R018_arcasHLA$affinity<500)
+dim(MHCflurry_R018_arcasHLA_affinity)
+```
+```{r}
+MHCflurry_R018_arcasHLA_affinity_simp<- subset(MHCflurry_R018_arcasHLA_affinity
+[!duplicated(MHCflurry_R018_arcasHLA_affinity$peptide), ])
+dim(MHCflurry_R018_arcasHLA_affinity_simp)
+```
+
+## R019
+
+### OPTITYPE
+
+```{r}
+NetMHCpanEL_R019_optitype <- read.delim("C:/Users/chris/Desktop/NetMHCpanEL/NetMHCpanEL_R019_optitype.tabular", stringsAsFactors=TRUE)
+head(NetMHCpanEL_R019_optitype)
+```
+
+```{r}
+dim(NetMHCpanEL_R019_optitype)
+```
+
+```{r}
+
+NetMHCpanEL_R019_optitype_rank<- subset(NetMHCpanEL_R019_optitype, NetMHCpanEL_R019_optitype$percentile_rank<2)
+dim(NetMHCpanEL_R019_optitype_rank)
+
+```
+```{r}
+NetMHCpanEL_R019_optitype_rank_simp<- subset(NetMHCpanEL_R019_optitype_rank
+[!duplicated(NetMHCpanEL_R019_optitype_rank$peptide), ])
+dim(NetMHCpanEL_R019_optitype_rank_simp)
+```
+
+
+--
+```{r}
+NetMHCpanBA_R019_optitype <- read.delim("C:/Users/chris/Desktop/NetMHCpanBA/NetMHCpanBA_R018_optitype.tabular", stringsAsFactors=TRUE)
+head(NetMHCpanBA_R019_optitype)
+```
+```{r}
+dim(NetMHCpanBA_R019_optitype)
+```
+```{r}
+NetMHCpanBA_R019_optitype_ic50<- subset(NetMHCpanBA_R019_optitype, NetMHCpanBA_R019_optitype$ic50<500)
+dim(NetMHCpanBA_R019_optitype_ic50)
+```
+```{r}
+NetMHCpanBA_R019_optitype_ic50_simp<- subset(NetMHCpanBA_R019_optitype_ic50
+[!duplicated(NetMHCpanBA_R019_optitype_ic50$peptide), ])
+dim(NetMHCpanBA_R019_optitype_ic50_simp)
+```
+
+--
+```{r}
+NetMHCcons_R019_optitype <- read.delim("C:/Users/chris/Desktop/NetMHCcons/NetMHCcons_R019_optitype.tabular", stringsAsFactors=TRUE)
+head(NetMHCcons_R019_optitype)
+```
+```{r}
+dim(NetMHCcons_R019_optitype)
+```
+```{r}
+NetMHCcons_R019_optitype_ic50<- subset(NetMHCcons_R019_optitype, NetMHCcons_R019_optitype$ic50<500)
+dim(NetMHCcons_R019_optitype_ic50)
+```
+```{r}
+NetMHCcons_R019_optitype_ic50_simp<- subset(NetMHCcons_R019_optitype_ic50
+[!duplicated(NetMHCcons_R019_optitype_ic50$peptide), ])
+dim(NetMHCcons_R019_optitype_ic50_simp)
+```
+
+--
+```{r}
+PickPocket_R019_optitype <- read.delim("C:/Users/chris/Desktop/PickPocket/PickPocket_R019_optitype.tabular", stringsAsFactors=TRUE)
+head(PickPocket_R019_optitype)
+```
+```{r}
+dim(PickPocket_R019_optitype)
+```
+```{r}
+PickPocket_R019_optitype_ic50<- subset(PickPocket_R019_optitype, PickPocket_R019_optitype$ic50<500)
+dim(PickPocket_R019_optitype_ic50)
+```
+```{r}
+PickPocket_R019_optitype_ic50_simp<- subset(PickPocket_R019_optitype_ic50
+[!duplicated(PickPocket_R019_optitype_ic50$peptide), ])
+dim(PickPocket_R019_optitype_ic50_simp)
+```
+
+--
+```{r}
+MHCflurry_R019_optitype <- read.csv("MHCflurry/MHCflurry_R019_optitype.csv", sep=",")
+head(MHCflurry_R019_optitype)
+```
+```{r}
+dim(MHCflurry_R019_optitype)
+```
+
+```{r}
+MHCflurry_R019_optitype_affinity<- subset(MHCflurry_R019_optitype, MHCflurry_R019_optitype$affinity<500)
+dim(MHCflurry_R019_optitype_affinity)
+```
+```{r}
+MHCflurry_R019_optitype_affinity_simp<- subset(MHCflurry_R019_optitype_affinity
+[!duplicated(MHCflurry_R019_optitype_affinity$peptide), ])
+dim(MHCflurry_R019_optitype_affinity_simp)
+```
+
+### SEQ2HLA
+
+
+```{r}
+NetMHCpanEL_R019_seq2HLA <- read.delim("C:/Users/chris/Desktop/NetMHCpanEL/NetMHCpanEL_R019_seq2HLA.tabular", stringsAsFactors=TRUE)
+head(NetMHCpanEL_R019_seq2HLA)
+```
+
+```{r}
+dim(NetMHCpanEL_R019_seq2HLA)
+```
+```{r}
+NetMHCpanEL_R019_seq2HLA_rank<- subset(NetMHCpanEL_R019_seq2HLA, NetMHCpanEL_R019_seq2HLA$percentile_rank<2)
+dim(NetMHCpanEL_R019_seq2HLA_rank)
+```
+```{r}
+NetMHCpanEL_R019_seq2HLA_rank_simp<- subset(NetMHCpanEL_R019_seq2HLA_rank
+[!duplicated(NetMHCpanEL_R019_seq2HLA_rank$peptide), ])
+dim(NetMHCpanEL_R019_seq2HLA_rank_simp)
+```
+
+--
+```{r}
+NetMHCpanBA_R019_seq2HLA <- read.delim("C:/Users/chris/Desktop/NetMHCpanBA/NetMHCpanBA_R019_seq2HLA.tabular", stringsAsFactors=TRUE)
+head(NetMHCpanBA_R019_seq2HLA)
+```
+```{r}
+dim(NetMHCpanBA_R019_seq2HLA)
+```
+```{r}
+NetMHCpanBA_R019_seq2HLA_ic50<- subset(NetMHCpanBA_R019_seq2HLA, NetMHCpanBA_R019_seq2HLA$ic50<500)
+dim(NetMHCpanBA_R019_seq2HLA_ic50)
+```
+```{r}
+NetMHCpanBA_R019_seq2HLA_ic50_simp<- subset(NetMHCpanBA_R019_seq2HLA_ic50
+[!duplicated(NetMHCpanBA_R019_seq2HLA_ic50$peptide), ])
+dim(NetMHCpanBA_R019_seq2HLA_ic50_simp)
+```
+
+--
+```{r}
+NetMHCcons_R019_seq2HLA <- read.delim("C:/Users/chris/Desktop/NetMHCcons/NetMHCcons_R019_seq2HLA.tabular", stringsAsFactors=TRUE)
+head(NetMHCcons_R019_seq2HLA)
+```
+```{r}
+dim(NetMHCcons_R019_seq2HLA)
+```
+```{r}
+NetMHCcons_R019_seq2HLA_ic50<- subset(NetMHCcons_R019_seq2HLA, NetMHCcons_R019_seq2HLA$ic50<500)
+dim(NetMHCcons_R019_seq2HLA_ic50)
+```
+```{r}
+NetMHCcons_R019_seq2HLA_ic50_simp<- subset(NetMHCcons_R019_seq2HLA_ic50
+[!duplicated(NetMHCcons_R019_seq2HLA_ic50$peptide), ])
+dim(NetMHCcons_R019_seq2HLA_ic50_simp)
+```
+
+--
+```{r}
+PickPocket_R019_seq2HLA <- read.delim("C:/Users/chris/Desktop/PickPocket/PickPocket_R019_seq2HLA.tabular", stringsAsFactors=TRUE)
+head(PickPocket_R019_seq2HLA)
+```
+```{r}
+dim(PickPocket_R019_seq2HLA)
+```
+```{r}
+PickPocket_R019_seq2HLA_ic50<- subset(PickPocket_R019_seq2HLA, PickPocket_R019_seq2HLA$ic50<500)
+dim(PickPocket_R019_seq2HLA_ic50)
+```
+```{r}
+PickPocket_R019_seq2HLA_ic50_simp<- subset(PickPocket_R019_seq2HLA_ic50
+[!duplicated(PickPocket_R019_seq2HLA_ic50$peptide), ])
+dim(PickPocket_R019_seq2HLA_ic50_simp)
+```
+
+--
+```{r}
+MHCflurry_R019_seq2HLA <- read.csv("MHCflurry/MHCflurry_R018_seq2HLA.csv", sep=",")
+head(MHCflurry_R019_seq2HLA)
+```
+```{r}
+dim(MHCflurry_R019_seq2HLA)
+```
+
+```{r}
+MHCflurry_R019_seq2HLA_affinity<- subset(MHCflurry_R019_seq2HLA, MHCflurry_R019_seq2HLA$affinity<500)
+dim(MHCflurry_R019_seq2HLA_affinity)
+```
+```{r}
+MHCflurry_R019_seq2HLA_affinity_simp<- subset(MHCflurry_R019_seq2HLA_affinity
+[!duplicated(MHCflurry_R019_seq2HLA_affinity$peptide), ])
+dim(MHCflurry_R019_seq2HLA_affinity_simp)
+```
+
+
+### ARCASHLA
+
+
+```{r}
+NetMHCpanEL_R019_arcasHLA <- read.delim("C:/Users/chris/Desktop/NetMHCpanEL/NetMHCpanEL_R019_arcasHLA.tabular", stringsAsFactors = TRUE)
+head(NetMHCpanEL_R019_arcasHLA)
+```
+
+```{r}
+dim(NetMHCpanEL_R019_arcasHLA)
+```
+```{r}
+NetMHCpanEL_R019_arcasHLA_rank<- subset(NetMHCpanEL_R019_arcasHLA, NetMHCpanEL_R019_arcasHLA$percentile_rank<2)
+dim(NetMHCpanEL_R019_arcasHLA_rank)
+```
+```{r}
+NetMHCpanEL_R019_arcasHLA_rank_simp<- subset(NetMHCpanEL_R019_arcasHLA_rank
+[!duplicated(NetMHCpanEL_R019_arcasHLA_rank$peptide), ])
+dim(NetMHCpanEL_R019_arcasHLA_rank_simp)
+```
+--
+```{r}
+NetMHCpanBA_R019_arcasHLA <- read.delim("C:/Users/chris/Desktop/NetMHCpanBA/NetMHCpanBA_R019_arcasHLA.tabular", stringsAsFactors = TRUE)
+head(NetMHCpanBA_R019_arcasHLA)
+```
+```{r}
+dim(NetMHCpanBA_R019_arcasHLA)
+```
+```{r}
+NetMHCpanBA_R019_arcasHLA_ic50<- subset(NetMHCpanBA_R019_arcasHLA, NetMHCpanBA_R019_arcasHLA$ic50<500)
+dim(NetMHCpanBA_R019_arcasHLA_ic50)
+```
+```{r}
+NetMHCpanBA_R019_arcasHLA_ic50_simp<- subset(NetMHCpanBA_R019_arcasHLA_ic50
+[!duplicated(NetMHCpanBA_R019_arcasHLA_ic50$peptide), ])
+dim(NetMHCpanBA_R019_arcasHLA_ic50_simp)
+```
+
+--
+```{r}
+NetMHCcons_R019_arcasHLA <- read.delim("C:/Users/chris/Desktop/NetMHCcons/NetMHCcons_R019_arcasHLA.tabular", stringsAsFactors=TRUE)
+head(NetMHCcons_R019_arcasHLA)
+```
+```{r}
+dim(NetMHCcons_R019_arcasHLA)
+```
+```{r}
+NetMHCcons_R019_arcasHLA_ic50<- subset(NetMHCcons_R019_arcasHLA, NetMHCcons_R019_arcasHLA$ic50<500)
+dim(NetMHCcons_R019_arcasHLA_ic50)
+```
+```{r}
+NetMHCcons_R019_arcasHLA_ic50_simp<- subset(NetMHCcons_R019_arcasHLA_ic50
+[!duplicated(NetMHCcons_R019_arcasHLA_ic50$peptide), ])
+dim(NetMHCcons_R019_arcasHLA_ic50_simp)
+```
+
+--
+```{r}
+PickPocket_R019_arcasHLA <- read.delim("C:/Users/chris/Desktop/PickPocket/PickPocket_R019_arcasHLA.tabular", stringsAsFactors=TRUE)
+head(PickPocket_R019_arcasHLA)
+```
+```{r}
+dim(PickPocket_R019_arcasHLA)
+```
+```{r}
+PickPocket_R019_arcasHLA_ic50<- subset(PickPocket_R019_arcasHLA, PickPocket_R019_arcasHLA$ic50<500)
+dim(PickPocket_R019_arcasHLA_ic50)
+```
+```{r}
+PickPocket_R019_arcasHLA_ic50_simp<- subset(PickPocket_R019_arcasHLA_ic50
+[!duplicated(PickPocket_R019_arcasHLA_ic50$peptide), ])
+dim(PickPocket_R019_arcasHLA_ic50_simp)
+```
+
+--
+```{r}
+MHCflurry_R019_arcasHLA <- read.csv("MHCflurry/MHCflurry_R019_arcasHLA.csv", sep=",")
+head(MHCflurry_R019_arcasHLA)
+```
+```{r}  
+dim(MHCflurry_R019_arcasHLA)
+```
+
+```{r}
+MHCflurry_R019_arcasHLA_affinity<- subset(MHCflurry_R019_arcasHLA, MHCflurry_R019_arcasHLA$affinity<500)
+dim(MHCflurry_R019_arcasHLA_affinity)
+```
+```{r}
+MHCflurry_R019_arcasHLA_affinity_simp<- subset(MHCflurry_R019_arcasHLA_affinity
+[!duplicated(MHCflurry_R019_arcasHLA_affinity$peptide), ])
+dim(MHCflurry_R019_arcasHLA_affinity_simp)
+```
+
+# COMPARACIONES ENTRE SOFTWARES CON LA MISMA PREDICCIÓN DE HLA
+
+A continuación se comparan los resultados de los softwares con la misma predicción de HLA, por ejemplo, en el primer caso, comparamos NetMHCpanEL con NetMHCpanBA con la misma predicción de HLA obtnida con OptiType.
+
+## R009
+
+### OptiType
+
+```{r}
+#library(dplyr)
+#NetMHCpanEL_R009_optitype_rankvsNetMHCpanBA_R009_optitype_ic50_2 = NetMHCpanEL_R009_optitype_rank_simp %>% inner_join(NetMHCpanBA_R009_optitype_ic50_simp, by=c("peptide", "allele", "X.ID", "core", "icore", "seq_num", "start", "end", "length"))
+#dim(NetMHCpanEL_R009_optitype_rankvsNetMHCpanBA_R009_optitype_ic50_2)
+```
+
+
+```{r}
+NetMHCpanEL_R009_optitype_rankvsNetMHCpanBA_R009_optitype_ic50<- merge(x= NetMHCpanEL_R009_optitype_rank_simp, y= NetMHCpanBA_R009_optitype_ic50_simp, by=c("peptide", "allele", "X.ID", "core", "icore", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R009_optitype_rankvsNetMHCpanBA_R009_optitype_ic50)
+```
+
+
+```{r}
+NetMHCpanEL_R009_optitype_rankvsNetMHCcons_R009_optitype_ic50<- merge(x= NetMHCpanEL_R009_optitype_rank_simp, y= NetMHCcons_R009_optitype_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R009_optitype_rankvsNetMHCcons_R009_optitype_ic50)
+```
+
+```{r}
+NetMHCpanEL_R009_optitype_rankvsPickPocket_R009_optitype_ic50<- merge(x= NetMHCpanEL_R009_optitype_rank_simp, y= PickPocket_R009_optitype_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R009_optitype_rankvsPickPocket_R009_optitype_ic50)
+```
+
+```{r}
+NetMHCpanEL_R009_optitype_rankvsMHCflurry_R009_optitype_affinity<- merge(x= NetMHCpanEL_R009_optitype_rank_simp, y= MHCflurry_R009_optitype_affinity_simp, by=c("peptide"))
+dim(NetMHCpanEL_R009_optitype_rankvsMHCflurry_R009_optitype_affinity)
+```
+
+```{r}
+NetMHCpanBA_R009_optitype_ic50vsNetMHCcons_R009_optitype_ic50<- merge(x= NetMHCpanBA_R009_optitype_ic50_simp, y= NetMHCcons_R009_optitype_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanBA_R009_optitype_ic50vsNetMHCcons_R009_optitype_ic50)
+```
+
+```{r}
+NetMHCpanBA_R009_optitype_ic50vsPickPocket_R009_optitype_ic50<- merge(x= NetMHCpanBA_R009_optitype_ic50_simp, y= PickPocket_R009_optitype_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanBA_R009_optitype_ic50vsPickPocket_R009_optitype_ic50)
+```
+
+```{r}
+NetMHCpanBA_R009_optitype_ic50vsMHCflurry_R009_optitype_affinity<- merge(x= NetMHCpanBA_R009_optitype_ic50_simp, y= MHCflurry_R009_optitype_affinity_simp, by=c("peptide"))
+dim(NetMHCpanBA_R009_optitype_ic50vsMHCflurry_R009_optitype_affinity)
+```
+
+```{r}
+NetMHCcons_R009_optitype_ic50vsPickPocket_R009_optitype_ic50<- merge(x= NetMHCcons_R009_optitype_ic50_simp, y= PickPocket_R009_optitype_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCcons_R009_optitype_ic50vsPickPocket_R009_optitype_ic50)
+```
+
+```{r}
+NetMHCcons_R009_optitype_ic50vsMHCflurry_R009_optitype_affinity<- merge(x= NetMHCcons_R009_optitype_ic50_simp, y= MHCflurry_R009_optitype_affinity_simp, by=c("peptide"))
+dim(NetMHCcons_R009_optitype_ic50vsMHCflurry_R009_optitype_affinity)
+```
+
+```{r}
+PickPocket_R009_optitype_ic50vsMHCflurry_R009_optitype_affinity<- merge(x= PickPocket_R009_optitype_ic50_simp, y= MHCflurry_R009_optitype_affinity_simp, by=c("peptide"))
+dim(PickPocket_R009_optitype_ic50vsMHCflurry_R009_optitype_affinity)
+```
+
+
+### seq2HLA
+
+```{r}
+NetMHCpanEL_R009_seq2HLA_rankvsNetMHCpanBA_R009_seq2HLA_ic50<- merge(x= NetMHCpanEL_R009_seq2HLA_rank_simp, y= NetMHCpanBA_R009_seq2HLA_ic50_simp, by=c("peptide", "allele", "X.ID", "core", "icore", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R009_seq2HLA_rankvsNetMHCpanBA_R009_seq2HLA_ic50)
+```
+
+```{r}
+NetMHCpanEL_R009_seq2HLA_rankvsNetMHCcons_R009_seq2HLA_ic50<- merge(x= NetMHCpanEL_R009_seq2HLA_rank_simp, y= NetMHCcons_R009_seq2HLA_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R009_seq2HLA_rankvsNetMHCcons_R009_seq2HLA_ic50)
+```
+
+```{r}
+NetMHCpanEL_R009_seq2HLA_rankvsPickPocket_R009_seq2HLA_ic50<- merge(x= NetMHCpanEL_R009_seq2HLA_rank_simp, y= PickPocket_R009_seq2HLA_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R009_seq2HLA_rankvsPickPocket_R009_seq2HLA_ic50)
+```
+
+```{r}
+NetMHCpanEL_R009_seq2HLA_rankvsMHCflurry_R009_seq2HLA_affinity<- merge(x= NetMHCpanEL_R009_seq2HLA_rank_simp, y= MHCflurry_R009_seq2HLA_affinity_simp, by=c("peptide"))
+dim(NetMHCpanEL_R009_seq2HLA_rankvsMHCflurry_R009_seq2HLA_affinity)
+```
+
+```{r}
+NetMHCpanBA_R009_seq2HLA_ic50vsNetMHCcons_R009_seq2HLA_ic50<- merge(x= NetMHCpanBA_R009_seq2HLA_ic50_simp, y= NetMHCcons_R009_seq2HLA_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanBA_R009_seq2HLA_ic50vsNetMHCcons_R009_seq2HLA_ic50)
+```
+
+```{r}
+NetMHCpanBA_R009_seq2HLA_ic50vsPickPocket_R009_seq2HLA_ic50<- merge(x= NetMHCpanBA_R009_seq2HLA_ic50_simp, y= PickPocket_R009_seq2HLA_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanBA_R009_seq2HLA_ic50vsPickPocket_R009_seq2HLA_ic50)
+```
+
+```{r}
+NetMHCpanBA_R009_seq2HLA_ic50vsMHCflurry_R009_seq2HLA_affinity<- merge(x= NetMHCpanBA_R009_seq2HLA_ic50_simp, y= MHCflurry_R009_seq2HLA_affinity_simp, by=c("peptide"))
+dim(NetMHCpanBA_R009_seq2HLA_ic50vsMHCflurry_R009_seq2HLA_affinity)
+```
+
+```{r}
+NetMHCcons_R009_seq2HLA_ic50vsPickPocket_R009_seq2HLA_ic50<- merge(x= NetMHCcons_R009_seq2HLA_ic50_simp, y= PickPocket_R009_seq2HLA_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCcons_R009_seq2HLA_ic50vsPickPocket_R009_seq2HLA_ic50)
+```
+
+```{r}
+NetMHCcons_R009_seq2HLA_ic50vsMHCflurry_R009_seq2HLA_affinity<- merge(x= NetMHCcons_R009_seq2HLA_ic50_simp, y= MHCflurry_R009_seq2HLA_affinity_simp, by=c("peptide"))
+dim(NetMHCcons_R009_seq2HLA_ic50vsMHCflurry_R009_seq2HLA_affinity)
+```
+
+```{r}
+PickPocket_R009_seq2HLA_ic50vsMHCflurry_R009_seq2HLA_affinity<- merge(x= PickPocket_R009_seq2HLA_ic50_simp, y= MHCflurry_R009_seq2HLA_affinity_simp, by=c("peptide"))
+dim(PickPocket_R009_seq2HLA_ic50vsMHCflurry_R009_seq2HLA_affinity)
+```
+
+### arcasHLA
+
+```{r}
+NetMHCpanEL_R009_arcasHLA_rankvsNetMHCpanBA_R009_arcasHLA_ic50<- merge(x= NetMHCpanEL_R009_arcasHLA_rank_simp, y= NetMHCpanBA_R009_arcasHLA_ic50_simp, by=c("peptide", "allele", "core", "icore", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R009_arcasHLA_rankvsNetMHCpanBA_R009_arcasHLA_ic50)
+```
+
+```{r}
+NetMHCpanEL_R009_arcasHLA_rankvsMHCflurry_R009_arcasHLA_affinity<- merge(x= NetMHCpanEL_R009_arcasHLA_rank_simp, y= MHCflurry_R009_arcasHLA_affinity_simp, by=c("peptide"))
+dim(NetMHCpanEL_R009_arcasHLA_rankvsMHCflurry_R009_arcasHLA_affinity)
+```
+
+```{r}
+NetMHCpanBA_R009_arcasHLA_ic50vsMHCflurry_R009_arcasHLA_affinity<- merge(x= NetMHCpanBA_R009_arcasHLA_ic50_simp, y= MHCflurry_R009_arcasHLA_affinity_simp, by=c("peptide"))
+dim(NetMHCpanBA_R009_arcasHLA_ic50vsMHCflurry_R009_arcasHLA_affinity)
+```
+
+## R018
+
+### Optitype
+
+```{r}
+NetMHCpanEL_R018_optitype_rankvsNetMHCpanBA_R018_optitype_ic50<- merge(x= NetMHCpanEL_R018_optitype_rank_simp, y= NetMHCpanBA_R018_optitype_ic50_simp, by=c("peptide", "allele", "X.ID", "core", "icore", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R018_optitype_rankvsNetMHCpanBA_R018_optitype_ic50)
+```
+
+
+```{r}
+NetMHCpanEL_R018_optitype_rankvsNetMHCcons_R018_optitype_ic50<- merge(x= NetMHCpanEL_R018_optitype_rank_simp, y= NetMHCcons_R018_optitype_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R018_optitype_rankvsNetMHCcons_R018_optitype_ic50)
+```
+
+```{r}
+NetMHCpanEL_R018_optitype_rankvsPickPocket_R018_optitype_ic50<- merge(x= NetMHCpanEL_R018_optitype_rank_simp, y= PickPocket_R018_optitype_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R018_optitype_rankvsPickPocket_R018_optitype_ic50)
+```
+
+```{r}
+NetMHCpanEL_R018_optitype_rankvsMHCflurry_R018_optitype_affinity<- merge(x= NetMHCpanEL_R018_optitype_rank_simp, y= MHCflurry_R018_optitype_affinity_simp, by=c("peptide"))
+dim(NetMHCpanEL_R018_optitype_rankvsMHCflurry_R018_optitype_affinity)
+```
+
+```{r}
+NetMHCpanBA_R018_optitype_ic50vsNetMHCcons_R018_optitype_ic50<- merge(x= NetMHCpanBA_R018_optitype_ic50_simp, y= NetMHCcons_R018_optitype_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanBA_R018_optitype_ic50vsNetMHCcons_R018_optitype_ic50)
+```
+
+```{r}
+NetMHCpanBA_R018_optitype_ic50vsPickPocket_R018_optitype_ic50<- merge(x= NetMHCpanBA_R018_optitype_ic50_simp, y= PickPocket_R018_optitype_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanBA_R018_optitype_ic50vsPickPocket_R018_optitype_ic50)
+```
+
+```{r}
+NetMHCpanBA_R018_optitype_ic50vsMHCflurry_R018_optitype_affinity<- merge(x= NetMHCpanBA_R018_optitype_ic50_simp, y= MHCflurry_R018_optitype_affinity_simp, by=c("peptide"))
+dim(NetMHCpanBA_R018_optitype_ic50vsMHCflurry_R018_optitype_affinity)
+```
+
+```{r}
+NetMHCcons_R018_optitype_ic50vsPickPocket_R018_optitype_ic50<- merge(x= NetMHCcons_R018_optitype_ic50_simp, y= PickPocket_R018_optitype_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCcons_R018_optitype_ic50vsPickPocket_R018_optitype_ic50)
+```
+
+```{r}
+NetMHCcons_R018_optitype_ic50vsMHCflurry_R018_optitype_affinity<- merge(x= NetMHCcons_R018_optitype_ic50_simp, y= MHCflurry_R018_optitype_affinity_simp, by=c("peptide"))
+dim(NetMHCcons_R018_optitype_ic50vsMHCflurry_R018_optitype_affinity)
+```
+
+```{r}
+PickPocket_R018_optitype_ic50vsMHCflurry_R018_optitype_affinity<- merge(x= PickPocket_R018_optitype_ic50_simp, y= MHCflurry_R018_optitype_affinity_simp, by=c("peptide"))
+dim(PickPocket_R018_optitype_ic50vsMHCflurry_R018_optitype_affinity)
+```
+
+### seq2HLA
+
+```{r}
+NetMHCpanEL_R018_seq2HLA_rankvsNetMHCpanBA_R018_seq2HLA_ic50<- merge(x= NetMHCpanEL_R018_seq2HLA_rank_simp, y= NetMHCpanBA_R018_seq2HLA_ic50_simp, by=c("peptide", "allele", "X.ID", "core", "icore", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R018_seq2HLA_rankvsNetMHCpanBA_R018_seq2HLA_ic50)
+```
+
+
+```{r}
+NetMHCpanEL_R018_seq2HLA_rankvsNetMHCcons_R018_seq2HLA_ic50<- merge(x= NetMHCpanEL_R018_seq2HLA_rank_simp, y= NetMHCcons_R018_seq2HLA_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R018_seq2HLA_rankvsNetMHCcons_R018_seq2HLA_ic50)
+```
+
+```{r}
+NetMHCpanEL_R018_seq2HLA_rankvsPickPocket_R018_seq2HLA_ic50<- merge(x= NetMHCpanEL_R018_seq2HLA_rank_simp, y= PickPocket_R018_seq2HLA_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R018_seq2HLA_rankvsPickPocket_R018_seq2HLA_ic50)
+```
+
+```{r}
+NetMHCpanEL_R018_seq2HLA_rankvsMHCflurry_R018_seq2HLA_affinity<- merge(x= NetMHCpanEL_R018_seq2HLA_rank_simp, y= MHCflurry_R018_seq2HLA_affinity_simp, by=c("peptide"))
+dim(NetMHCpanEL_R018_seq2HLA_rankvsMHCflurry_R018_seq2HLA_affinity)
+```
+
+```{r}
+NetMHCpanBA_R018_seq2HLA_ic50vsNetMHCcons_R018_seq2HLA_ic50<- merge(x= NetMHCpanBA_R018_seq2HLA_ic50_simp, y= NetMHCcons_R018_seq2HLA_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanBA_R018_seq2HLA_ic50vsNetMHCcons_R018_seq2HLA_ic50)
+```
+
+```{r}
+NetMHCpanBA_R018_seq2HLA_ic50vsPickPocket_R018_seq2HLA_ic50<- merge(x= NetMHCpanBA_R018_seq2HLA_ic50_simp, y= PickPocket_R018_seq2HLA_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanBA_R018_seq2HLA_ic50vsPickPocket_R018_seq2HLA_ic50)
+```
+
+```{r}
+NetMHCpanBA_R018_seq2HLA_ic50vsMHCflurry_R018_seq2HLA_affinity<- merge(x= NetMHCpanBA_R018_seq2HLA_ic50_simp, y= MHCflurry_R018_seq2HLA_affinity_simp, by=c("peptide"))
+dim(NetMHCpanBA_R018_seq2HLA_ic50vsMHCflurry_R018_seq2HLA_affinity)
+```
+
+```{r}
+NetMHCcons_R018_seq2HLA_ic50vsPickPocket_R018_seq2HLA_ic50<- merge(x= NetMHCcons_R018_seq2HLA_ic50_simp, y= PickPocket_R018_seq2HLA_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCcons_R018_seq2HLA_ic50vsPickPocket_R018_seq2HLA_ic50)
+```
+
+```{r}
+NetMHCcons_R018_seq2HLA_ic50vsMHCflurry_R018_seq2HLA_affinity<- merge(x= NetMHCcons_R018_seq2HLA_ic50_simp, y= MHCflurry_R018_seq2HLA_affinity_simp, by=c("peptide"))
+dim(NetMHCcons_R018_seq2HLA_ic50vsMHCflurry_R018_seq2HLA_affinity)
+```
+
+```{r}
+PickPocket_R018_seq2HLA_ic50vsMHCflurry_R018_seq2HLA_affinity<- merge(x= PickPocket_R018_seq2HLA_ic50_simp, y= MHCflurry_R018_seq2HLA_affinity_simp, by=c("peptide"))
+dim(PickPocket_R018_seq2HLA_ic50vsMHCflurry_R018_seq2HLA_affinity)
+```
+
+### arcasHLA
+
+```{r}
+NetMHCpanEL_R018_arcasHLA_rankvsNetMHCpanBA_R018_arcasHLA_ic50<- merge(x= NetMHCpanEL_R018_arcasHLA_rank_simp, y= NetMHCpanBA_R018_arcasHLA_ic50_simp, by=c("peptide", "allele", "X.ID", "core", "icore", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R018_arcasHLA_rankvsNetMHCpanBA_R018_arcasHLA_ic50)
+```
+
+
+```{r}
+NetMHCpanEL_R018_arcasHLA_rankvsNetMHCcons_R018_arcasHLA_ic50<- merge(x= NetMHCpanEL_R018_arcasHLA_rank_simp, y= NetMHCcons_R018_arcasHLA_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R018_arcasHLA_rankvsNetMHCcons_R018_arcasHLA_ic50)
+```
+
+```{r}
+NetMHCpanEL_R018_arcasHLA_rankvsPickPocket_R018_arcasHLA_ic50<- merge(x= NetMHCpanEL_R018_arcasHLA_rank_simp, y= PickPocket_R018_arcasHLA_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R018_arcasHLA_rankvsPickPocket_R018_arcasHLA_ic50)
+```
+
+```{r}
+NetMHCpanEL_R018_arcasHLA_rankvsMHCflurry_R018_arcasHLA_affinity<- merge(x= NetMHCpanEL_R018_arcasHLA_rank_simp, y= MHCflurry_R018_arcasHLA_affinity_simp, by=c("peptide"))
+dim(NetMHCpanEL_R018_arcasHLA_rankvsMHCflurry_R018_arcasHLA_affinity)
+```
+
+```{r}
+NetMHCpanBA_R018_arcasHLA_ic50vsNetMHCcons_R018_arcasHLA_ic50<- merge(x= NetMHCpanBA_R018_arcasHLA_ic50_simp, y= NetMHCcons_R018_arcasHLA_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanBA_R018_arcasHLA_ic50vsNetMHCcons_R018_arcasHLA_ic50)
+```
+
+```{r}
+NetMHCpanBA_R018_arcasHLA_ic50vsPickPocket_R018_arcasHLA_ic50<- merge(x= NetMHCpanBA_R018_arcasHLA_ic50_simp, y= PickPocket_R018_arcasHLA_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanBA_R018_arcasHLA_ic50vsPickPocket_R018_arcasHLA_ic50)
+```
+
+```{r}
+NetMHCpanBA_R018_arcasHLA_ic50vsMHCflurry_R018_arcasHLA_affinity<- merge(x= NetMHCpanBA_R018_arcasHLA_ic50_simp, y= MHCflurry_R018_arcasHLA_affinity_simp, by=c("peptide"))
+dim(NetMHCpanBA_R018_arcasHLA_ic50vsMHCflurry_R018_arcasHLA_affinity)
+```
+
+```{r}
+NetMHCcons_R018_arcasHLA_ic50vsPickPocket_R018_arcasHLA_ic50<- merge(x= NetMHCcons_R018_arcasHLA_ic50_simp, y= PickPocket_R018_arcasHLA_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCcons_R018_arcasHLA_ic50vsPickPocket_R018_arcasHLA_ic50)
+```
+
+```{r}
+NetMHCcons_R018_arcasHLA_ic50vsMHCflurry_R018_arcasHLA_affinity<- merge(x= NetMHCcons_R018_arcasHLA_ic50_simp, y= MHCflurry_R018_arcasHLA_affinity_simp, by=c("peptide"))
+dim(NetMHCcons_R018_arcasHLA_ic50vsMHCflurry_R018_arcasHLA_affinity)
+```
+
+```{r}
+PickPocket_R018_arcasHLA_ic50vsMHCflurry_R018_arcasHLA_affinity<- merge(x= PickPocket_R018_arcasHLA_ic50_simp, y= MHCflurry_R018_arcasHLA_affinity_simp, by=c("peptide"))
+dim(PickPocket_R018_arcasHLA_ic50vsMHCflurry_R018_arcasHLA_affinity)
+```
+
+
+## R019
+
+### Optitype
+
+
+
+```{r}
+NetMHCpanEL_R019_optitype_rankvsNetMHCpanBA_R019_optitype_ic50<- merge(x= NetMHCpanEL_R019_optitype_rank_simp, y= NetMHCpanBA_R019_optitype_ic50_simp, by=c("peptide", "allele", "X.ID", "core", "icore", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R019_optitype_rankvsNetMHCpanBA_R019_optitype_ic50)
+```
+
+
+```{r}
+NetMHCpanEL_R019_optitype_rankvsNetMHCcons_R019_optitype_ic50<- merge(x= NetMHCpanEL_R019_optitype_rank_simp, y= NetMHCcons_R019_optitype_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R019_optitype_rankvsNetMHCcons_R019_optitype_ic50)
+```
+
+```{r}
+NetMHCpanEL_R019_optitype_rankvsPickPocket_R019_optitype_ic50<- merge(x= NetMHCpanEL_R019_optitype_rank_simp, y= PickPocket_R019_optitype_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R019_optitype_rankvsPickPocket_R019_optitype_ic50)
+```
+
+```{r}
+NetMHCpanEL_R019_optitype_rankvsMHCflurry_R019_optitype_affinity<- merge(x= NetMHCpanEL_R019_optitype_rank_simp, y= MHCflurry_R019_optitype_affinity_simp, by=c("peptide"))
+dim(NetMHCpanEL_R019_optitype_rankvsMHCflurry_R019_optitype_affinity)
+```
+
+```{r}
+NetMHCpanBA_R019_optitype_ic50vsNetMHCcons_R019_optitype_ic50<- merge(x= NetMHCpanBA_R019_optitype_ic50_simp, y= NetMHCcons_R019_optitype_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanBA_R019_optitype_ic50vsNetMHCcons_R019_optitype_ic50)
+```
+
+```{r}
+NetMHCpanBA_R019_optitype_ic50vsPickPocket_R019_optitype_ic50<- merge(x= NetMHCpanBA_R019_optitype_ic50_simp, y= PickPocket_R019_optitype_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanBA_R019_optitype_ic50vsPickPocket_R019_optitype_ic50)
+```
+
+```{r}
+NetMHCpanBA_R019_optitype_ic50vsMHCflurry_R019_optitype_affinity<- merge(x= NetMHCpanBA_R019_optitype_ic50_simp, y= MHCflurry_R019_optitype_affinity_simp, by=c("peptide"))
+dim(NetMHCpanBA_R019_optitype_ic50vsMHCflurry_R019_optitype_affinity)
+```
+
+```{r}
+NetMHCcons_R019_optitype_ic50vsPickPocket_R019_optitype_ic50<- merge(x= NetMHCcons_R019_optitype_ic50_simp, y= PickPocket_R019_optitype_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCcons_R019_optitype_ic50vsPickPocket_R019_optitype_ic50)
+```
+
+```{r}
+NetMHCcons_R019_optitype_ic50vsMHCflurry_R019_optitype_affinity<- merge(x= NetMHCcons_R019_optitype_ic50_simp, y= MHCflurry_R019_optitype_affinity_simp, by=c("peptide"))
+dim(NetMHCcons_R019_optitype_ic50vsMHCflurry_R019_optitype_affinity)
+```
+
+```{r}
+PickPocket_R019_optitype_ic50vsMHCflurry_R019_optitype_affinity<- merge(x= PickPocket_R019_optitype_ic50_simp, y= MHCflurry_R019_optitype_affinity_simp, by=c("peptide"))
+dim(PickPocket_R019_optitype_ic50vsMHCflurry_R019_optitype_affinity)
+```
+
+### seq2HLA
+
+```{r}
+NetMHCpanEL_R019_seq2HLA_rankvsNetMHCpanBA_R019_seq2HLA_ic50<- merge(x= NetMHCpanEL_R019_seq2HLA_rank_simp, y= NetMHCpanBA_R019_seq2HLA_ic50_simp, by=c("peptide", "allele", "X.ID", "core", "icore", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R019_seq2HLA_rankvsNetMHCpanBA_R019_seq2HLA_ic50)
+```
+
+
+```{r}
+NetMHCpanEL_R019_seq2HLA_rankvsNetMHCcons_R019_seq2HLA_ic50<- merge(x= NetMHCpanEL_R019_seq2HLA_rank_simp, y= NetMHCcons_R019_seq2HLA_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R019_seq2HLA_rankvsNetMHCcons_R019_seq2HLA_ic50)
+```
+
+```{r}
+NetMHCpanEL_R019_seq2HLA_rankvsPickPocket_R019_seq2HLA_ic50<- merge(x= NetMHCpanEL_R019_seq2HLA_rank_simp, y= PickPocket_R019_seq2HLA_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R019_seq2HLA_rankvsPickPocket_R019_seq2HLA_ic50)
+```
+
+```{r}
+NetMHCpanEL_R019_seq2HLA_rankvsMHCflurry_R019_seq2HLA_affinity<- merge(x= NetMHCpanEL_R019_seq2HLA_rank_simp, y= MHCflurry_R019_seq2HLA_affinity_simp, by=c("peptide"))
+dim(NetMHCpanEL_R019_seq2HLA_rankvsMHCflurry_R019_seq2HLA_affinity)
+```
+
+```{r}
+NetMHCpanBA_R019_seq2HLA_ic50vsNetMHCcons_R019_seq2HLA_ic50<- merge(x= NetMHCpanBA_R019_seq2HLA_ic50_simp, y= NetMHCcons_R019_seq2HLA_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanBA_R019_seq2HLA_ic50vsNetMHCcons_R019_seq2HLA_ic50)
+```
+
+```{r}
+NetMHCpanBA_R019_seq2HLA_ic50vsPickPocket_R019_seq2HLA_ic50<- merge(x= NetMHCpanBA_R019_seq2HLA_ic50_simp, y= PickPocket_R019_seq2HLA_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanBA_R019_seq2HLA_ic50vsPickPocket_R019_seq2HLA_ic50)
+```
+
+```{r}
+NetMHCpanBA_R019_seq2HLA_ic50vsMHCflurry_R019_seq2HLA_affinity<- merge(x= NetMHCpanBA_R019_seq2HLA_ic50_simp, y= MHCflurry_R019_seq2HLA_affinity_simp, by=c("peptide"))
+dim(NetMHCpanBA_R019_seq2HLA_ic50vsMHCflurry_R019_seq2HLA_affinity)
+```
+
+```{r}
+NetMHCcons_R019_seq2HLA_ic50vsPickPocket_R019_seq2HLA_ic50<- merge(x= NetMHCcons_R019_seq2HLA_ic50_simp, y= PickPocket_R019_seq2HLA_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCcons_R019_seq2HLA_ic50vsPickPocket_R019_seq2HLA_ic50)
+```
+
+```{r}
+NetMHCcons_R019_seq2HLA_ic50vsMHCflurry_R019_seq2HLA_affinity<- merge(x= NetMHCcons_R019_seq2HLA_ic50_simp, y= MHCflurry_R019_seq2HLA_affinity_simp, by=c("peptide"))
+dim(NetMHCcons_R019_seq2HLA_ic50vsMHCflurry_R019_seq2HLA_affinity)
+```
+
+```{r}
+PickPocket_R019_seq2HLA_ic50vsMHCflurry_R019_seq2HLA_affinity<- merge(x= PickPocket_R019_seq2HLA_ic50_simp, y= MHCflurry_R019_seq2HLA_affinity_simp, by=c("peptide"))
+dim(PickPocket_R019_seq2HLA_ic50vsMHCflurry_R019_seq2HLA_affinity)
+```
+
+### arcasHLA
+
+```{r}
+NetMHCpanEL_R019_arcasHLA_rankvsNetMHCpanBA_R019_arcasHLA_ic50<- merge(x= NetMHCpanEL_R019_arcasHLA_rank_simp, y= NetMHCpanBA_R019_arcasHLA_ic50_simp, by=c("peptide", "allele", "X.ID", "core", "icore", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R019_arcasHLA_rankvsNetMHCpanBA_R019_arcasHLA_ic50)
+```
+
+
+```{r}
+NetMHCpanEL_R019_arcasHLA_rankvsNetMHCcons_R019_arcasHLA_ic50<- merge(x= NetMHCpanEL_R019_arcasHLA_rank_simp, y= NetMHCcons_R019_arcasHLA_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R019_arcasHLA_rankvsNetMHCcons_R019_arcasHLA_ic50)
+```
+
+```{r}
+NetMHCpanEL_R019_arcasHLA_rankvsPickPocket_R019_arcasHLA_ic50<- merge(x= NetMHCpanEL_R019_arcasHLA_rank_simp, y= PickPocket_R019_arcasHLA_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R019_arcasHLA_rankvsPickPocket_R019_arcasHLA_ic50)
+```
+
+```{r}
+NetMHCpanEL_R019_arcasHLA_rankvsMHCflurry_R019_arcasHLA_affinity<- merge(x= NetMHCpanEL_R019_arcasHLA_rank_simp, y= MHCflurry_R019_arcasHLA_affinity_simp, by=c("peptide"))
+dim(NetMHCpanEL_R019_arcasHLA_rankvsMHCflurry_R019_arcasHLA_affinity)
+```
+
+```{r}
+NetMHCpanBA_R019_arcasHLA_ic50vsNetMHCcons_R019_arcasHLA_ic50<- merge(x= NetMHCpanBA_R019_arcasHLA_ic50_simp, y= NetMHCcons_R019_arcasHLA_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanBA_R019_arcasHLA_ic50vsNetMHCcons_R019_arcasHLA_ic50)
+```
+
+```{r}
+NetMHCpanBA_R019_arcasHLA_ic50vsPickPocket_R019_arcasHLA_ic50<- merge(x= NetMHCpanBA_R019_arcasHLA_ic50_simp, y= PickPocket_R019_arcasHLA_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanBA_R019_arcasHLA_ic50vsPickPocket_R019_arcasHLA_ic50)
+```
+
+```{r}
+NetMHCpanBA_R019_arcasHLA_ic50vsMHCflurry_R019_arcasHLA_affinity<- merge(x= NetMHCpanBA_R019_arcasHLA_ic50_simp, y= MHCflurry_R019_arcasHLA_affinity_simp, by=c("peptide"))
+dim(NetMHCpanBA_R019_arcasHLA_ic50vsMHCflurry_R019_arcasHLA_affinity)
+```
+
+```{r}
+NetMHCcons_R019_arcasHLA_ic50vsPickPocket_R019_arcasHLA_ic50<- merge(x= NetMHCcons_R019_arcasHLA_ic50_simp, y= PickPocket_R019_arcasHLA_ic50_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCcons_R019_arcasHLA_ic50vsPickPocket_R019_arcasHLA_ic50)
+```
+
+```{r}
+NetMHCcons_R019_arcasHLA_ic50vsMHCflurry_R019_arcasHLA_affinity<- merge(x= NetMHCcons_R019_arcasHLA_ic50_simp, y= MHCflurry_R019_arcasHLA_affinity_simp, by=c("peptide"))
+dim(NetMHCcons_R019_arcasHLA_ic50vsMHCflurry_R019_arcasHLA_affinity)
+```
+
+```{r}
+PickPocket_R019_arcasHLA_ic50vsMHCflurry_R019_arcasHLA_affinity<- merge(x= PickPocket_R019_arcasHLA_ic50_simp, y= MHCflurry_R019_arcasHLA_affinity_simp, by=c("peptide"))
+dim(PickPocket_R019_arcasHLA_ic50vsMHCflurry_R019_arcasHLA_affinity)
+```
+
+
+
+
+# COMPARACIONES NetMHCpanEL ENTRE SOFTWARES UTILIZANDO LAS DIFERETES PREDICCIONES DE HLA
+
+
+Comparamos los resultados del software NetMHCpanEL obtenidos para el mismo paciente con las diferentes predicciones de HLA para ver si las diferencias en la predicción de HLA se traducen en diferencias en la predicción de neoantígenos.
+
+
+## R009
+
+```{r}
+NetMHCpanEL_R009_optitype_rankvsNetMHCpanEL_R009_seq2HLA_rank<- merge(x= NetMHCpanEL_R009_optitype_rank_simp, y= NetMHCpanEL_R009_seq2HLA_rank_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R009_optitype_rankvsNetMHCpanEL_R009_seq2HLA_rank)
+```
+
+```{r}
+NetMHCpanEL_R009_optitype_rankvsNetMHCpanEL_R009_arcasHLA_rank<- merge(x= NetMHCpanEL_R009_optitype_rank_simp, y= NetMHCpanEL_R009_arcasHLA_rank_simp, by=c("peptide", "allele", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R009_optitype_rankvsNetMHCpanEL_R009_arcasHLA_rank)
+```
+
+```{r}
+NetMHCpanEL_R009_seq2HLA_rankvsNetMHCpanEL_R009_arcasHLA_rank<- merge(x= NetMHCpanEL_R009_seq2HLA_rank_simp, y= NetMHCpanEL_R009_arcasHLA_rank_simp, by=c("peptide", "allele", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R009_seq2HLA_rankvsNetMHCpanEL_R009_arcasHLA_rank)
+```
+
+## R018
+
+```{r}
+NetMHCpanEL_R018_optitype_rankvsNetMHCpanEL_R018_seq2HLA_rank<- merge(x= NetMHCpanEL_R018_optitype_rank_simp, y= NetMHCpanEL_R018_seq2HLA_rank_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R018_optitype_rankvsNetMHCpanEL_R018_seq2HLA_rank)
+```
+
+```{r}
+NetMHCpanEL_R018_optitype_rankvsNetMHCpanEL_R018_arcasHLA_rank<- merge(x= NetMHCpanEL_R018_optitype_rank_simp, y= NetMHCpanEL_R018_arcasHLA_rank_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R018_optitype_rankvsNetMHCpanEL_R018_arcasHLA_rank)
+```
+
+```{r}
+NetMHCpanEL_R018_seq2HLA_rankvsNetMHCpanEL_R018_arcasHLA_rank<- merge(x= NetMHCpanEL_R018_seq2HLA_rank_simp, y= NetMHCpanEL_R018_arcasHLA_rank_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R018_seq2HLA_rankvsNetMHCpanEL_R018_arcasHLA_rank)
+```
+
+## R019
+
+```{r}
+NetMHCpanEL_R019_optitype_rankvsNetMHCpanEL_R019_seq2HLA_rank<- merge(x= NetMHCpanEL_R019_optitype_rank_simp, y= NetMHCpanEL_R019_seq2HLA_rank_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R019_optitype_rankvsNetMHCpanEL_R019_seq2HLA_rank)
+```
+
+```{r}
+NetMHCpanEL_R019_optitype_rankvsNetMHCpanEL_R019_arcasHLA_rank<- merge(x= NetMHCpanEL_R019_optitype_rank_simp, y= NetMHCpanEL_R019_arcasHLA_rank_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R019_optitype_rankvsNetMHCpanEL_R019_arcasHLA_rank)
+```
+
+```{r}
+NetMHCpanEL_R019_seq2HLA_rankvsNetMHCpanEL_R019_arcasHLA_rank<- merge(x= NetMHCpanEL_R019_seq2HLA_rank_simp, y= NetMHCpanEL_R019_arcasHLA_rank_simp, by=c("peptide", "allele", "X.ID", "seq_num", "start", "end", "length"))
+dim(NetMHCpanEL_R019_seq2HLA_rankvsNetMHCpanEL_R019_arcasHLA_rank)
+```
+******
+
+# DIAGRAMAS DE VENN
+
+A continuación se realizan diagramas de Venn de todas las comparaciones previas.ç
+
+Instalación de paquetes.
+
+```{r}
+#install.packages("ggVennDiagram")
+#install.packages("ggplot2")
+library(ggVennDiagram)
+library(ggplot2)
+```
+
+## R009
+
+### OptiType
+
+```{r}
+listR009optitype<-list(
+  NetMHCpanEL = as.character(NetMHCpanEL_R009_optitype_rank_simp$peptide),
+  NetMHCpanBA = 
+as.character(NetMHCpanBA_R009_optitype_ic50_simp$peptide),
+  NetMHCcons = 
+as.character(NetMHCcons_R009_optitype_ic50_simp$peptide),
+  PickPocket = 
+as.character(PickPocket_R009_optitype_ic50_simp$peptide),
+  MHCflurry = 
+as.character(MHCflurry_R009_optitype_affinity_simp$peptide)
+)
+VennDiag_R009_OptiType<- ggVennDiagram(listR009optitype, set_color="black", label_color = "black", label_alpha=0, set_size=3, label_size = 3)
+VennDiag_R009_OptiType + scale_x_continuous(expand=expansion(mult=.2)) + scale_fill_distiller(palette= "Reds", direction = 1) + labs(title = "R009 OptiType") 
+```
+
+### Seq2HLA
+
+```{r}
+listR009seq2HLA<-list(
+  NetMHCpanEL = as.character(NetMHCpanEL_R009_seq2HLA_rank_simp$peptide),
+  NetMHCpanBA = 
+as.character(NetMHCpanBA_R009_seq2HLA_ic50_simp$peptide),
+  NetMHCcons = 
+as.character(NetMHCcons_R009_seq2HLA_ic50_simp$peptide),
+  PickPocket = 
+as.character(PickPocket_R009_seq2HLA_ic50_simp$peptide),
+  MHCflurry = 
+as.character(MHCflurry_R009_seq2HLA_affinity_simp$peptide)
+)
+VennDiag_R009_seq2HLA<- ggVennDiagram(listR009seq2HLA, set_color="black", label_color = "black", label_alpha=0, set_size=3, label_size = 3)
+VennDiag_R009_seq2HLA + scale_x_continuous(expand=expansion(mult=.2)) + scale_fill_distiller(palette= "Greens", direction = 1) + labs(title = "R009 seq2HLA") 
+```
+
+### arcasHLA
+
+NetMHCcons y PickPocket no contemplan los HLA predichos por arcasHLA.
+
+```{r}
+listR009arcasHLA<-list(
+  NetMHCpanEL = as.character(NetMHCpanEL_R009_arcasHLA_rank_simp$peptide),
+  NetMHCpanBA = 
+as.character(NetMHCpanBA_R009_arcasHLA_ic50_simp$peptide),
+  MHCflurry = 
+as.character(MHCflurry_R009_arcasHLA_affinity_simp$peptide)
+)
+VennDiag_R009_arcasHLA<- ggVennDiagram(listR009arcasHLA, set_color="black", label_color = "black", label_alpha=0, set_size=3, label_size = 3)
+VennDiag_R009_arcasHLA + scale_x_continuous(expand=expansion(mult=.2)) + scale_fill_distiller(palette= "Blues", direction = 1) + labs(title = "R009 arcasHLA") 
+```
+
+
+## R018
+
+### OptiType
+
+```{r}
+listR018optitype<-list(
+  NetMHCpanEL = as.character(NetMHCpanEL_R018_optitype_rank_simp$peptide),
+  NetMHCpanBA = 
+as.character(NetMHCpanBA_R018_optitype_ic50_simp$peptide),
+  NetMHCcons = 
+as.character(NetMHCcons_R018_optitype_ic50_simp$peptide),
+  PickPocket = 
+as.character(PickPocket_R018_optitype_ic50_simp$peptide),
+  MHCflurry = 
+as.character(MHCflurry_R018_optitype_affinity_simp$peptide)
+)
+VennDiag_R018_OptiType<- ggVennDiagram(listR018optitype, set_color="black", label_color = "black", label_alpha=0, set_size=3, label_size = 3)
+VennDiag_R018_OptiType + scale_x_continuous(expand=expansion(mult=.2)) + scale_fill_distiller(palette= "Reds", direction = 1) + labs(title = "R018 OptiType") 
+```
+
+### Seq2HLA
+
+```{r}
+listR018seq2HLA<-list(
+  NetMHCpanEL = as.character(NetMHCpanEL_R018_seq2HLA_rank_simp$peptide),
+  NetMHCpanBA = 
+as.character(NetMHCpanBA_R018_seq2HLA_ic50_simp$peptide),
+  NetMHCcons = 
+as.character(NetMHCcons_R018_seq2HLA_ic50_simp$peptide),
+  PickPocket = 
+as.character(PickPocket_R018_seq2HLA_ic50_simp$peptide),
+  MHCflurry = 
+as.character(MHCflurry_R018_seq2HLA_affinity_simp$peptide)
+)
+VennDiag_R018_seq2HLA<- ggVennDiagram(listR018seq2HLA, set_color="black", label_color = "black", label_alpha=0, set_size=3, label_size = 3)
+VennDiag_R018_seq2HLA + scale_x_continuous(expand=expansion(mult=.2)) + scale_fill_distiller(palette= "Greens", direction = 1) + labs(title = "R018 seq2HLA") 
+```
+
+### arcasHLA
+
+```{r}
+listR018arcasHLA<-list(
+  NetMHCpanEL = as.character(NetMHCpanEL_R018_arcasHLA_rank_simp$peptide),
+  NetMHCpanBA = 
+as.character(NetMHCpanBA_R018_arcasHLA_ic50_simp$peptide),
+  NetMHCcons = 
+as.character(NetMHCcons_R018_arcasHLA_ic50_simp$peptide),
+  PickPocket = 
+as.character(PickPocket_R018_arcasHLA_ic50_simp$peptide),
+  MHCflurry = 
+as.character(MHCflurry_R018_arcasHLA_affinity_simp$peptide)
+)
+VennDiag_R018_arcasHLA<- ggVennDiagram(listR018arcasHLA, set_color="black", label_color = "black", label_alpha=0, set_size=3, label_size = 3)
+VennDiag_R018_arcasHLA + scale_x_continuous(expand=expansion(mult=.2)) + scale_fill_distiller(palette= "Blues", direction = 1) + labs(title = "R018 arcasHLA") 
+```
+
+## R019
+
+### OptiType
+
+```{r}
+listR019optitype<-list(
+  NetMHCpanEL = as.character(NetMHCpanEL_R019_optitype_rank_simp$peptide),
+  NetMHCpanBA = 
+as.character(NetMHCpanBA_R019_optitype_ic50_simp$peptide),
+  NetMHCcons = 
+as.character(NetMHCcons_R019_optitype_ic50_simp$peptide),
+  PickPocket = 
+as.character(PickPocket_R019_optitype_ic50_simp$peptide),
+  MHCflurry = 
+as.character(MHCflurry_R019_optitype_affinity_simp$peptide)
+)
+VennDiag_R019_OptiType<- ggVennDiagram(listR019optitype, set_color="black", label_color = "black", label_alpha=0, set_size=3, label_size = 3)
+VennDiag_R019_OptiType + scale_x_continuous(expand=expansion(mult=.2)) + scale_fill_distiller(palette= "Reds", direction = 1) + labs(title = "R019 OptiType") 
+```
+
+### Seq2HLA
+
+```{r}
+listR019seq2HLA<-list(
+  NetMHCpanEL = as.character(NetMHCpanEL_R019_seq2HLA_rank_simp$peptide),
+  NetMHCpanBA = 
+as.character(NetMHCpanBA_R019_seq2HLA_ic50_simp$peptide),
+  NetMHCcons = 
+as.character(NetMHCcons_R019_seq2HLA_ic50_simp$peptide),
+  PickPocket = 
+as.character(PickPocket_R019_seq2HLA_ic50_simp$peptide),
+  MHCflurry = 
+as.character(MHCflurry_R019_seq2HLA_affinity_simp$peptide)
+)
+VennDiag_R019_seq2HLA<- ggVennDiagram(listR019seq2HLA, set_color="black", label_color = "black", label_alpha=0, set_size=3, label_size = 3)
+VennDiag_R019_seq2HLA + scale_x_continuous(expand=expansion(mult=.2)) + scale_fill_distiller(palette= "Greens", direction = 1) + labs(title = "R019 seq2HLA") 
+```
+
+### arcasHLA
+
+```{r}
+listR019arcasHLA<-list(
+  NetMHCpanEL = as.character(NetMHCpanEL_R019_arcasHLA_rank_simp$peptide),
+  NetMHCpanBA = 
+as.character(NetMHCpanBA_R019_arcasHLA_ic50_simp$peptide),
+  NetMHCcons = 
+as.character(NetMHCcons_R019_arcasHLA_ic50_simp$peptide),
+  PickPocket = 
+as.character(PickPocket_R019_arcasHLA_ic50_simp$peptide),
+  MHCflurry = 
+as.character(MHCflurry_R019_arcasHLA_affinity_simp$peptide)
+)
+VennDiag_R019_arcasHLA<- ggVennDiagram(listR019arcasHLA, set_color="black", label_color = "black", label_alpha=0, set_size=3, label_size = 3)
+VennDiag_R019_arcasHLA + scale_x_continuous(expand=expansion(mult=.2)) + scale_fill_distiller(palette= "Blues", direction = 1) + labs(title = "R019 arcasHLA") 
+```
+### R009 NetMHCpanEL
+
+```{r}
+listR009NetMHCpanEL<-list(
+  NetMHCpanELoptitype = as.character(NetMHCpanEL_R009_optitype_rank_simp$peptide),
+  NetMHCpanELseq2HLA = 
+as.character(NetMHCpanEL_R009_seq2HLA_rank_simp$peptide),
+  NetMHCpanELarcasHLA = 
+as.character(NetMHCpanEL_R009_arcasHLA_rank_simp$peptide)
+)
+VennDiag_R009_NetMHCpanEL<- ggVennDiagram(listR009NetMHCpanEL, set_color="black", label_color = "black", label_alpha=0, set_size=3, label_size = 3)
+VennDiag_R009_NetMHCpanEL + scale_x_continuous(expand=expansion(mult=.2)) + scale_fill_distiller(palette= "YlOrRd", direction = 1) + labs(title = "R009 NetMHCpanEL Optitype/Seq2HLA/arcasHLA") 
+```
+### R018 NetMHCpanEL
+
+```{r}
+listR018NetMHCpanEL<-list(
+  NetMHCpanELoptitype = as.character(NetMHCpanEL_R018_optitype_rank_simp$peptide),
+  NetMHCpanELseq2HLA = 
+as.character(NetMHCpanEL_R018_seq2HLA_rank_simp$peptide),
+  NetMHCpanELarcasHLA = 
+as.character(NetMHCpanEL_R018_arcasHLA_rank_simp$peptide)
+)
+VennDiag_R018_NetMHCpanEL<- ggVennDiagram(listR018NetMHCpanEL, set_color="black", label_color = "black", label_alpha=0, set_size=3, label_size = 3)
+VennDiag_R018_NetMHCpanEL + scale_x_continuous(expand=expansion(mult=.2)) + scale_fill_distiller(palette= "YlGnBu", direction = 1) + labs(title = "R018 NetMHCpanEL Optitype/Seq2HLA/arcasHLA") 
+```
+### R019 NetMHCpanEL
+
+```{r}
+listR019NetMHCpanEL<-list(
+  NetMHCpanELoptitype = as.character(NetMHCpanEL_R019_optitype_rank_simp$peptide),
+  NetMHCpanELseq2HLA = 
+as.character(NetMHCpanEL_R019_seq2HLA_rank_simp$peptide),
+  NetMHCpanELarcasHLA = 
+as.character(NetMHCpanEL_R019_arcasHLA_rank_simp$peptide)
+)
+VennDiag_R019_NetMHCpanEL<- ggVennDiagram(listR019NetMHCpanEL, set_color="black", label_color = "black", label_alpha=0, set_size=3, label_size = 3)
+VennDiag_R019_NetMHCpanEL + scale_x_continuous(expand=expansion(mult=.2)) + scale_fill_distiller(palette= "YlGn", direction = 1) + labs(title = "R019 NetMHCpanEL Optitype/Seq2HLA/arcasHLA") 
+```
+
+
+******
+
+# RNA-seq
+
+Se revisa únicamente la expresión de los transcritos obtenidos de los softwares OptiType (HLA typing) y NetMHCpanEL (neoantigen prediction) por ser los recomenadodos por IEDB y a la vez por predecir un número más amplio de neoantigenos. 
+
+## R009
+
+```{r}
+R009_rnaseq <- read.delim("C:/Users/chris/Desktop/R009_rna_seq.tabular", stringsAsFactors=TRUE)
+head(R009_rnaseq)
+```
+
+```{r}
+dim(R009_rnaseq)
+```
+```{r}
+R009_RNAseq_TPM<- subset(R009_rnaseq, R009_rnaseq$TPM >1)
+dim(R009_RNAseq_TPM)
+```
+
+```{r}
+head(R009_RNAseq_TPM)
+```
+
+Las tablas de neoantígenos trabajan con los genes, mientras que los resultados obtenidos de Salmon con transcritos. Con el paquete biomaRt podemos obtener las correspondencias entre genes y transcritos.
+
+```{r}
+#3if (!require("BiocManager", quietly = TRUE))
+    #install.packages("BiocManager")
+
+#BiocManager::install("biomaRt")
+library(biomaRt)
+
+mart <- useMart(biomart = "ensembl", dataset = "hsapiens_gene_ensembl",host = "https://uswest.ensembl.org") 
+
+R009_transcript_ids <- R009_RNAseq_TPM$Name
+
+R009_resultados <- getBM(attributes = c('ensembl_transcript_id_version', 
+                            'ensembl_gene_id', 
+                            'external_transcript_name',
+                            'external_gene_name',
+                            'go_id'),
+             filters = 'ensembl_transcript_id_version', 
+             values = R009_transcript_ids,
+             mart = mart)
+```
+```{r}
+head(R009_resultados)
+```
+
+```{r}
+dim(R009_resultados)
+```
+
+```{r}
+NetMHCpanEL_R009_optitype_rank_simp$ensembl_gene_id<-substring(NetMHCpanEL_R009_optitype_rank_simp$X.ID, first=1, last=15)
+head(NetMHCpanEL_R009_optitype_rank_simp)
+```
+
+
+
+```{r}
+R009_neoantigenos_expresados<- merge(x= NetMHCpanEL_R009_optitype_rank_simp, y= R009_resultados, by=c("ensembl_gene_id"))
+dim(R009_neoantigenos_expresados)
+```
+```{r}
+head(R009_neoantigenos_expresados)
+```
+
+```{r}
+listR009NeoanRNAseq<-list(
+  NetMHCpanEL = as.character(NetMHCpanEL_R009_optitype_rank_simp$peptide),
+  RNAseq = 
+as.character(R009_neoantigenos_expresados$peptide)
+)
+VennDiag_R009_NeoanRNAseq<- ggVennDiagram(listR009NeoanRNAseq, set_color="black", label_color = "black", label_alpha=0, set_size=3, label_size = 3)
+VennDiag_R009_NeoanRNAseq + scale_x_continuous(expand=expansion(mult=.2)) + scale_fill_distiller(palette= "Set1", direction = 1) + labs(title = "R009 Neoantigenos expresados a nivel tumoral") 
+```
+
+
+```{r}
+summary(as.factor(R009_neoantigenos_expresados$go_id))
+```
+```{r}
+summary(as.factor(R009_neoantigenos_expresados$ensembl_gene_id))
+```
+```{r}
+summary(as.factor(R009_neoantigenos_expresados$external_gene_name))
+```
+```{r}
+summary(as.factor(R009_neoantigenos_expresados$ensembl_transcript_id_version))
+```
+```{r}
+summary(as.factor(R009_neoantigenos_expresados$external_transcript_name))
+```
+
+
+
+
+
+
+## R018
+
+```{r}
+R018_rnaseq <- read.delim("C:/Users/chris/Desktop/R018_rna_seq.tabular", stringsAsFactors=TRUE)
+head(R018_rnaseq)
+```
+
+
+```{r}
+dim(R018_rnaseq)
+```
+```{r}
+R018_RNAseq_TPM<- subset(R018_rnaseq, R018_rnaseq$TPM >1)
+dim(R018_RNAseq_TPM)
+```
+
+```{r}
+
+mart <- useMart(biomart = "ensembl", dataset = "hsapiens_gene_ensembl", host = "https://uswest.ensembl.org") 
+
+R018_transcript_ids <- R018_RNAseq_TPM$Name
+
+R018_resultados <- getBM(attributes = c('ensembl_transcript_id_version', 
+                            'ensembl_gene_id', 
+                            'external_transcript_name',
+                            'external_gene_name',
+                            'go_id'),
+             filters = 'ensembl_transcript_id_version', 
+             values = R018_transcript_ids,
+             mart = mart)
+```
+```{r}
+head(R018_resultados)
+```
+
+```{r}
+dim(R018_resultados)
+```
+```{r}
+
+NetMHCpanEL_R018_optitype_rank_simp$ensembl_gene_id<-substring(NetMHCpanEL_R018_optitype_rank_simp$X.ID, first=1, last=15)
+head(NetMHCpanEL_R018_optitype_rank_simp)
+```
+
+
+
+```{r}
+R018_neoantigenos_expresados<- merge(x= NetMHCpanEL_R018_optitype_rank_simp, y= R018_resultados, by=c("ensembl_gene_id"))
+dim(R018_neoantigenos_expresados)
+```
+
+```{r}
+head(R018_neoantigenos_expresados)
+```
+
+```{r}
+listR018NeoanRNAseq<-list(
+  NetMHCpanEL = as.character(NetMHCpanEL_R018_optitype_rank_simp$peptide),
+  RNAseq = 
+as.character(R018_neoantigenos_expresados$peptide)
+)
+VennDiag_R018_NeoanRNAseq<- ggVennDiagram(listR018NeoanRNAseq, set_color="black", label_color = "black", label_alpha=0, set_size=3, label_size = 3)
+VennDiag_R018_NeoanRNAseq + scale_x_continuous(expand=expansion(mult=.2)) + scale_fill_distiller(palette= "Set1", direction = 1) + labs(title = "R018 Neoantigenos expresados a nivel tumoral") 
+```
+
+
+```{r}
+summary(as.factor(R018_neoantigenos_expresados$go_id))
+```
+```{r}
+summary(as.factor(R018_neoantigenos_expresados$ensembl_gene_id))
+```
+```{r}
+summary(as.factor(R018_neoantigenos_expresados$external_gene_name))
+```
+```{r}
+summary(as.factor(R018_neoantigenos_expresados$ensembl_transcript_id_version))
+```
+```{r}
+summary(as.factor(R018_neoantigenos_expresados$external_transcript_name))
+```
+
+## R019
+
+
+```{r}
+R019_rnaseq <- read.delim("C:/Users/chris/Desktop/R019_rna_seq.tabular", stringsAsFactors=TRUE)
+head(R019_rnaseq)
+```
+
+
+```{r}
+dim(R019_rnaseq)
+```
+```{r}
+R019_RNAseq_TPM<- subset(R019_rnaseq, R019_rnaseq$TPM >1)
+dim(R019_RNAseq_TPM)
+```
+
+
+
+```{r}
+
+mart <- useMart(biomart = "ensembl", dataset = "hsapiens_gene_ensembl", host = "https://uswest.ensembl.org") 
+
+R019_transcript_ids <- R019_RNAseq_TPM$Name
+
+R019_resultados <- getBM(attributes = c('ensembl_transcript_id_version', 
+                            'ensembl_gene_id', 
+                            'external_transcript_name',
+                            'external_gene_name',
+                            'go_id'),
+             filters = 'ensembl_transcript_id_version', 
+             values = R019_transcript_ids,
+             mart = mart)
+```
+```{r}
+head(R019_resultados)
+```
+
+```{r}
+dim(R019_resultados)
+```
+```{r}
+NetMHCpanEL_R019_optitype_rank_simp$ensembl_gene_id<-substring(NetMHCpanEL_R019_optitype_rank_simp$X.ID, first=1, last=15)
+head(NetMHCpanEL_R019_optitype_rank_simp)
+```
+
+
+
+```{r}
+R019_neoantigenos_expresados<- merge(x= NetMHCpanEL_R019_optitype_rank_simp, y= R019_resultados, by=c("ensembl_gene_id"))
+dim(R019_neoantigenos_expresados)
+```
+```{r}
+head(R019_neoantigenos_expresados)
+```
+
+```{r}
+listR019NeoanRNAseq<-list(
+  NetMHCpanEL = as.character(NetMHCpanEL_R019_optitype_rank_simp$peptide),
+  RNAseq = 
+as.character(R019_neoantigenos_expresados$peptide)
+)
+VennDiag_R019_NeoanRNAseq<- ggVennDiagram(listR019NeoanRNAseq, set_color="black", label_color = "black", label_alpha=0, set_size=3, label_size = 3)
+VennDiag_R019_NeoanRNAseq + scale_x_continuous(expand=expansion(mult=.2)) + scale_fill_distiller(palette= "Set1", direction = 1) + labs(title = "R019 Neoantigenos expresados a nivel tumoral") 
+```
+
+
+```{r}
+summary(as.factor(R019_neoantigenos_expresados$go_id))
+```
+```{r}
+summary(as.factor(R019_neoantigenos_expresados$ensembl_gene_id))
+```
+```{r}
+summary(as.factor(R019_neoantigenos_expresados$external_gene_name))
+```
+```{r}
+summary(as.factor(R019_neoantigenos_expresados$ensembl_transcript_id_version))
+```
+```{r}
+summary(as.factor(R019_neoantigenos_expresados$external_transcript_name))
+```
+### Neoantígenos expreasados sin duplicidades
+
+R009
+
+```{r}
+R009_neoantigenos_expresados_simp<- subset(R009_neoantigenos_expresados[!duplicated(R009_neoantigenos_expresados$peptide),])
+```
+ 
+```{r}
+dim(R009_neoantigenos_expresados_simp)
+```
+
+```{r}
+head(R009_neoantigenos_expresados_simp)
+```
+
+
+
+R018
+
+```{r}
+R018_neoantigenos_expresados_simp<- subset(R018_neoantigenos_expresados[!duplicated(R018_neoantigenos_expresados$peptide),])
+```
+
+```{r}
+dim(R018_neoantigenos_expresados_simp)
+```
+
+```{r}
+head(R018_neoantigenos_expresados_simp)
+```
+
+
+
+R019
+
+```{r}
+R019_neoantigenos_expresados_simp<- subset(R019_neoantigenos_expresados[!duplicated(R019_neoantigenos_expresados$peptide),])
+```
+
+```{r}
+dim(R019_neoantigenos_expresados_simp)
+```
+
+```{r}
+head(R019_neoantigenos_expresados_simp)
+```
+
+
+
