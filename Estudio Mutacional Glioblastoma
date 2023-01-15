@@ -1,0 +1,296 @@
+
+
+```{r installBioC, message=FALSE, warning=FALSE, eval=FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install()
+```
+
+
+```{r}
+#BiocManager::install("edgeR")
+#BiocManager::install("limma")
+#BiocManager::install("Glimma")
+#BiocManager::install("org.Hs.eg.db")
+#BiocManager::install("hgu95av2.db")
+#BiocManager::install("AnnotationDbi")
+#BiocManager::install("ShortRead")
+#BiocManager::install("maftools")
+#install.packages("gplots")
+#install.packages("R.utils")
+library(limma)
+library(edgeR)
+library(Glimma)
+library(org.Hs.eg.db)
+library(hgu95av2.db)
+library(gplots)
+library(AnnotationDbi)
+library(org.Hs.eg.db)
+library(RColorBrewer)
+library(ShortRead)
+library(maftools)
+library(R.utils)
+```
+
+### LECTURA DE DATOS.
+
+Se realiza un estudio genómico del Glioblastoma con la herramienta MAFtools [1].
+
+1. Archivo data_clinical_patient.
+
+Contiene información clínca de cada uno de los pacientes.
+
+```{r}
+data_clinical_patient <- read.delim("C:/Users/Usuario/Desktop/difgglass2019/data_clinical_patient.txt")
+head(data_clinical_patient)
+```
+```{r}
+dim(data_clinical_patient)
+```
+```{r}
+summary(data_clinical_patient)
+```
+
+2. Archivo data_clinical_sample.
+
+Contiene información clínca de cada una de las muestras. Cada paciente tiene 2 muestras. Las muestras fueron obtenidas de un ensayo clínico y la gran mayoría recogen una muestra del Tumor Primario (TP) y de la Primera Recurrencia (R1). En casos excepcionales (p.ej. en los casos: GLSS-HF-2869 en la fila 108 y GLSS-HF-3081 en la fila 120) se obtienen muestras únicamente de las recurrencias como la Segunda Recurrencia (R2), Tercera Recurrencia (R3) y Cuarta Recurrencia (R4). 
+
+```{r}
+data_clinical_sample<- read.delim("C:/Users/Usuario/Desktop/difgglass2019/data_clinical_sample.txt")
+head(data_clinical_sample)
+```
+```{r}
+dim(data_clinical_sample)
+```
+```{r}
+summary(data_clinical_sample)
+```
+
+Seleccionamos aquellas muestras que tengan un diagnóstico histológico de Glioblastoma. Nos servirá posteriormente para seleccionar las muestras en el archivo de mutaciones  en formato MAF.
+
+```{r}
+sample_gbm<- subset(data_clinical_sample, data_clinical_sample$HISTOLOGY=="Glioblastoma")
+head(sample_gbm)
+```
+```{r}
+dim(sample_gbm)
+```
+
+
+3. Archivo data_mutations.
+
+Contiene el conjunto de mutaciones en formato Mutation Annotation Format (MAF).
+
+```{r}
+data_mutations <- read.delim("C:/Users/Usuario/Desktop/difgglass2019/data_mutations.txt")
+head(data_mutations)
+```
+```{r}
+dim(data_mutations)
+```
+```{r}
+summary(data_mutations)
+```
+
+Seleccionamos aquellas mutaciones que corresponden a muestras con diagnóstico histológico de Glioblastoma. Nos ayudamos de la información obtenida de los archivos previos (sample_gbm).
+
+```{r}
+data_mutations_gbm<- subset(data_mutations, data_mutations$Tumor_Sample_Barcode == sample_gbm$SAMPLE_ID)
+head(data_mutations_gbm)
+```
+
+Seleccionamos aquellas mutaciones que corresponden a muestras con diagnóstico histológico distinto de Glioblastoma (Otros). Nos ayudamos de la información obtenida de los archivos previos.
+
+```{r}
+data_mutations_otros<- subset(data_mutations, data_mutations$Tumor_Sample_Barcode != sample_gbm$SAMPLE_ID)
+head(data_mutations_otros)
+```
+
+```{r}
+dim(data_mutations_gbm)
+```
+
+```{r}
+dim(data_mutations_otros)
+```
+
+Pese a que el número de pacientes/muestras con diagnóstico histológico de Glioblastoma es superior al resto de pacientes/muestras con diagnóstico diferente a Glioblastoma, estos últimos albergan la mayoría de mutaciones. 
+
+Hacemos un análisis de los datos del data_mutations haciendo una comparativa entre aquellos que son histológicamente Gliobastomas (data_mutations_gbm) y aquellos con un diagnóstico histológico diferente (data_mutations_otros).
+
+
+A) Estudio Genómico Glioblastoma (data_mutations_gbm)
+
+Procedemos a tratar los datos iniciales.
+
+```{r}
+gbm<- read.maf(maf=data_mutations_gbm)
+gbm
+```
+
+```{r}
+#Resumen de las muestras.
+muestras_gbm<-getSampleSummary(gbm)
+head(muestras_gbm)
+```
+```{r}
+# Resumen de los genes.
+genes_gbm<-getGeneSummary(gbm)
+head(genes_gbm)
+```
+```{r}
+#Muestras que conforman grupo gbm
+p_gbm<-getClinicalData(gbm)
+head(p_gbm)
+```
+
+Se visualizan las mutaciones especificadas en las muestras de Glioblastoma.
+
+```{r}
+#Resumen mutaciones en formato MAF.
+write.mafSummary(maf = gbm, basename = 'gbm')
+plotmafSummary(maf = gbm, rmOutlier = TRUE, addStat = 'median', dashboard = TRUE, titvRaw = FALSE)
+```
+
+En el grupo de muestras con diagnóstico Glioblastoma destacan de manera muy evidente las Mutaciones Missense (mutación sin sentido) generadas mayoritariamente por Single Nucleotide Polymorphisms (SNPs) con los cambios de nucleótido Citosina a Timina (C>T). A nivel genético existe una gran heterogeneidad, existiendo mutaciones en genes que representar como máximo el 1% de los genes mutados en las diferentes muestras.
+
+Los genes mutados y las mutaciones que los definen se representan mejor en el siguiente gráfico.
+
+```{r}
+oncoplot(maf = gbm, top = 20)
+```
+En esta representación gráfica se muestran los 20 genes más frecuentemente mutados sin superar ninguno de ellos una frecuencia del 1% y poniendo enfásis en el tipo de mutación existente en cada gen, por ejemplo en el gen PIK3CA predominan las Mutaciones Missense y en el gen PTEN las Mutaciones Nonsense y Delecciones In-Frame (sin alterar el marco de lectura, lo que si pasa en las Delecciones Out-Frame).
+
+
+En el siguiente gráfico se hace hincapié en el tipo de SNPs.
+
+```{r}
+gbm.titv = titv(maf = gbm, plot = FALSE, useSyn = TRUE)
+#plot titv summary
+plotTiTv(res = gbm.titv)
+```
+Se amplia la información mostrando gráficamente las Transiciones (sustitución de una base púrica -Adenina y Guanina- por otra púrica o de una pirimidínica -Citosina y Timina- por otra pirimidínica) y Transversiones (sustitución de una base puríca por otra pirimidínica y viceversa). La transición de una citosina por una timina destaca en frecuencia por encima del resto de mutaciones.
+
+Podemos realizar estudios de genes singulares, por ejemplo de los genes PIK3CA y PTEN, posicionando las mutaciones y especificando el tipo.
+
+```{r}
+#Estudio y localización de las mutaciones de los genes PIK3CA y PTEN, dos de los genes mutados con más frecuencia en los pacientes con Glioblastoma IDH wild-type. 
+lollipopPlot(maf = gbm, gene = 'PIK3CA', AACol= "HGVSp_Short", showMutationRate = TRUE)
+```
+```{r}
+lollipopPlot(maf = gbm, gene = 'PTEN', AACol= "HGVSp_Short", showMutationRate = TRUE)
+```
+Los tumores sólidos se caracterizan por tener locus genómicos con hipermutados [2]. Las regiones muy mutadas se pueden representar en un gráfico dibujando las distancias intervariantes en una escala genómica lineal.
+
+```{r}
+rainfallPlot(maf = gbm, detectChangePoints = TRUE, pointSize = 0.5)
+```
+De nuevo los SNPs por cambio de C>T marcan casi la totalidad de las mutaciones en un caso concreto.
+
+Se realiza la comparación de la carga mutacional con otros tumores que forman parte de la cohorte de tumores de The Cancer Genome Atlas Program (TCGA).
+
+```{r}
+gbm.mutload = tcgaCompare(maf = gbm, cohortName = 'Example-GBM', logscale = TRUE, capture_size = 50)
+```
+La carga mutacional en el Glioblastoma se encuentra por debajo del resto de tumores representados en el gráfico.
+
+
+Se estima el estado clonal de los genes mutados con mayor frecuencia.   
+
+```{r}
+plotVaf(maf = gbm, vafCol= "t_alt_count")
+```
+En el siguiente gráfico se realiza un estudio de mutaciones exclusivas vs simultaneidad de mutaciones en una misma muestra de los 25 genes mutados con mayor frecuencia en nuestra cohorte de pacientes.
+
+```{r}
+somaticInteractions(maf = gbm, top = 25, pvalue = c(0.05, 0.1))
+```
+
+Se puede concluir que la ocurrencia de múltiples mutaciones en un mismo individuo/muestra es muy infrecuente.
+
+
+Se enumneran las vías oncogénicas involucradas en el Glioblastoma así como los genes involucrados (genes supresores en rojo y concogenes en azul).
+
+```{r}
+OncogenicPathways(maf = gbm)
+```
+
+
+```{r}
+PlotOncogenicPathways(maf = gbm, pathways = "RTK-RAS")
+```
+A continuación se centra el estudio en los dominios afectados por cambios en los aminoácidos.
+
+```{r}
+gbm.pfam = pfamDomains(maf = gbm, AACol = "HGVSp_Short", top=10)
+```
+```{r}
+gbm_pfam1<- gbm.pfam$proteinSummary[,1:9, with= FALSE]
+head(gbm_pfam1)
+```
+
+```{r}
+gbm_pfam2<- gbm.pfam$domainSummary[,1:3, with= FALSE]
+head(gbm_pfam2)
+```
+
+Se realiza un estudio comparativo con otros tumores que afectan l sistema nervioso central.
+
+B) Estudio Genómico Otros tumores (data_mutations_otros)
+
+```{r}
+otros_snc <- read.maf(maf=data_mutations_otros)
+otros_snc
+```
+```{r}
+write.mafSummary(maf = otros_snc, basename = 'otros_snc')
+plotmafSummary(maf = otros_snc, rmOutlier = TRUE, addStat = 'median', dashboard = TRUE, titvRaw = FALSE)
+```
+
+Al igual que en el Glioblastoma las mutaciones missense por cambios de nucleótido único citosina por timina son los cambios más frecuentes, pero a diferencia del Glioblastoma, en el resto de tumores de sistema nervioso central si hay un claro predominio de mutaciones en algunos genes concretos, por ejemplo en los genes TP53, MUC16, EGFR, etc.
+
+```{r}
+oncoplot(maf = otros_snc, top = 25)
+```
+```{r}
+otros_snc.titv = titv(maf = otros_snc, plot = FALSE, useSyn = TRUE)
+plotTiTv(res = otros_snc.titv)
+```
+
+```{r}
+#Genes TP53 e IDH1
+lollipopPlot(maf = otros_snc, gene = 'TP53', showMutationRate = TRUE)
+```
+En el gen TP53 hay diferentes tipos de mutaciones en diferentes posiciones, mientras que en el gen IDH1 (ver siguiente figura) solo existen mutaciones missense en la misma posición.
+
+```{r}
+#Genes TP53 e IDH1
+lollipopPlot(maf = otros_snc, gene = 'IDH1', showMutationRate = TRUE)
+```
+
+El estudio de las frecuencias alélicas de las variantes indica una situación clonal mucho mayor en los genes más mutados que en el caso del Glioblastoma. 
+
+```{r}
+plotVaf(maf = otros_snc)
+```
+
+A diferencias de las muestras de Glioblastoma, en el resto de tumores del sistema nervioso central si son frecuentes y casi la norma las interacciones entre genes.
+
+```{r}
+somaticInteractions(maf =otros_snc, top = 25, pvalue = c(0.05, 0.1))
+```
+
+A difencia del Glioblastoma, en estos tumores si existen vías oncogénicas muy bien conocidas y definidas e implicadas frecuentemente en la mayoría de los casos. 
+
+```{r}
+OncogenicPathways(maf = otros_snc)
+```
+```{r}
+PlotOncogenicPathways(maf = otros_snc, pathways = "RTK-RAS")
+```
+
+### BIBLIOGRAFÍA
+
+[1] https://bioconductor.org/packages/release/bioc/vignettes/maftools/inst/doc/maftools.html (citado el 30/10/2022).
+
+[2] Tamborero, D., Gonzalez-Perez, A. & Lopez-Bigas, N. OncodriveCLUST: exploiting the positional clustering of somatic mutations to identify cancer genes. Bioinformatics 29, 2238-44 (2013).
